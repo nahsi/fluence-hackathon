@@ -1,0 +1,24 @@
+
+func (v {{.Name}}Value) Equal(o attr.Value) bool {
+other, ok := o.({{.Name}}Value)
+
+if !ok {
+return false
+}
+
+if v.state != other.state {
+return false
+}
+
+if v.state != attr.ValueStateKnown {
+return true
+}
+
+{{range $key, $value := .AttrValues }}
+if !v.{{$key.ToPrefixPascalCase $.Name}}.Equal(other.{{$key.ToPrefixPascalCase $.Name}}) {
+return false
+}
+{{end}}
+
+return true
+}

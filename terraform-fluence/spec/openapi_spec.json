@@ -1,0 +1,1994 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "fluence",
+    "description": "# Introduction\n\nThe Fluence API provides programmatic access to the decentralized Fluence compute marketplace, allowing developers to find, rent, and manage compute resources without using the web interface. With this API, you can integrate Fluence's decentralized compute capabilities directly into your applications and workflows.\n\nThe API documentation will start with a general overview about the design and technology that has been implemented, followed by reference information about specific endpoints.\n\n## Requests\n\nYou can communicate with the API by making an HTTP request the correct URI. Requests should be made using the HTTPS protocol\nso that traffic is encrypted. The interface responds to different methods depending on the action required.\n\n| Method | Description                                                                                                                                                                                                                                                                                                           |\n| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| GET    | Retrieves resource information (e.g., compute instances, account details). Returns data as JSON objects. These requests are read-only and won't modify any resources.                                                                                                                                                 |\n| POST   | Creates new resources. Include all required attributes in the request body as JSON. Use this when you wish to create a new object.                                                                                                                                                                                    |\n| PUT    | Updates existing resources completely. Replaces the entire resource with the provided data, regardless of current values.                                                                                                                                                                                             |\n| PATCH  | Some resources support partial modification with PATCH. Modifies specific attributes of a resource without affecting others. Ideal for partial updates like scaling resources or updating tags.                                                                                                                       |\n| DELETE | Removes resources from your account. The operation is idempotent - sending multiple delete requests for the same resource won't cause errors. This means that you do not have to check for a resource's availability prior to issuing a delete command, the final state will be the same regardless of its existence. |\n| HEAD   | Retrieves metadata about resources without fetching the full response body. Useful for checking resource existence and checking relevant metadata.                                                                                                                                                                    |\n\n## Responses\n\nThe API returns responses in JSON format, with HTTP status codes indicating the outcome. When a request is successful, a response will typically be sent back with the status in the 200 range and body in the form of a JSON object.\nWhen a DELETE request is processed, which will result in a successful HTTP 204 status and an empty response body\n\nIn case of a problem the status will contain the error code, while the body of the response will usually contain additional information about the problem that was encountered.\n\n### Response codes\n\n| Status Code | Description                                                                                                                    |\n| ----------- | ------------------------------------------------------------------------------------------------------------------------------ |\n| 2xx         | **Success** - The request was successfully received, understood, and processed                                                 |\n| 4xx         | **Client Error** - The request contains invalid syntax or cannot be fulfilled                                                  |\n| 400         | Bad request - Invalid parameters or malformed request                                                                          |\n| 401         | Unauthorized - Authentication required or failed                                                                               |\n| 403         | Forbidden - Valid request but you don't have permission                                                                        |\n| 404         | Not found - The requested resource doesn't exist                                                                               |\n| 429         | Too many requests - Rate limit exceeded                                                                                        |\n| 5xx         | **Server Error** - The server failed to fulfill a valid request. It is an internal error and something went wrong in our side. |\n\n### Error Response Format\n\nWhen an error occurs, the response includes detailed information:\n\n```json\n{\n  \"error\": {\n    \"code\": \"resource_not_found\",\n    \"message\": \"The requested compute instance does not exist\",\n    \"request_id\": \"req_12345\"\n  }\n}\n```\n\n## Authentication\n\nAll API requests require authentication using an API key, which must be included in the `Authorization` header using the Bearer scheme. All requests must be made over HTTPS.\n\n```bash\n    curl -X $HTTP_METHOD -H 'Authorization: Bearer $API_KEY'\n```\n\n### Managing API Keys\n\nGenerate a token by going to the [API section](https://console.fluence.network/settings/api-keys) of the Fluence Console account settings. Currently, two types of keys are available:\n\n- **Read-only keys**: Limited to retrieving information\n- **Full access keys**: Complete control over all resources\n\n> **Important**: API keys are only displayed once during creation for security reasons. Store them safely - if a key is lost, expired or compromised, you'll need to delete it and create a new one.\n\n### Key Security\n\nAPI keys function as complete authentication credentials, similar to a username/password combination. Therefore:\n\n- Keep your keys secure and never share them\n- Use HTTPS for all API requests\n- Rotate keys periodically\n- Set appropriate expiration dates when creating keys\n- Delete compromised keys immediately\n\n### Scopes\n\nScopes define the permissions assigned to an API key. The current scope system is simple:\n\n| Scope Type  | Permissions                                  |\n| ----------- | -------------------------------------------- |\n| Read-only   | Can only retrieve information (GET requests) |\n| Full access | Complete access to all API endpoints         |\n\nFuture updates will introduce granular scope control.\n\nGenerally, scopes are designed to match HTTP verbs and common CRUD operations (Create, Read, Update, Delete):\n\n| HTTP Method | Operation | Scope Format        |\n| ----------- | --------- | ------------------- |\n| GET         | Read      | `<resource>:read`   |\n| POST        | Create    | `<resource>:create` |\n| PUT/PATCH   | Update    | `<resource>:update` |\n| DELETE      | Delete    | `<resource>:delete` |\n\nFor example, creating a new Droplet by making a `POST` request to the [https://api.fluence.dev/vms/v3](https://api.fluence.dev/vms/v3) endpoint requires the `vm:create` scope while listing your VMs by making a `GET` request to the [https://api.fluence.dev/vms/v2](https://api.fluence.dev/vms/v2) endpoint requires the `vm:read` scope.\n\nEach API endpoint documentation specifies its required scope.\n",
+    "contact": {
+      "name": "Cloudless Labs"
+    },
+    "license": {
+      "name": "AGPL-3",
+      "identifier": "AGPL-3"
+    },
+    "version": "0.8.6"
+  },
+  "paths": {
+    "/marketplace/basic_configurations": {
+      "get": {
+        "tags": ["Marketplace"],
+        "description": "Get a list of basic configurations",
+        "operationId": "Get basic configurations",
+        "responses": {
+          "200": {
+            "description": "List Of Basic Configurations",
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "API Key"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/String"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Wrong parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Auth token invalid or missing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Not allowed to call this endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Unexpected server error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": ["vm:create"]
+          }
+        ]
+      }
+    },
+    "/marketplace/countries": {
+      "get": {
+        "tags": ["Marketplace"],
+        "description": "Get a list of available countries on the marketplace",
+        "operationId": "Get available countries",
+        "responses": {
+          "200": {
+            "description": "List Of Available Countries",
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "API Key"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Wrong parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Auth token invalid or missing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Not allowed to call this endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Unexpected server error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": ["vm:create"]
+          }
+        ]
+      }
+    },
+    "/marketplace/hardware": {
+      "get": {
+        "tags": ["Marketplace"],
+        "description": "Get a list of available hardware on the marketplace",
+        "operationId": "Get available hardware",
+        "responses": {
+          "200": {
+            "description": "List Of Available Hardware",
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "API Key"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailableHardware"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Wrong parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Auth token invalid or missing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Not allowed to call this endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Unexpected server error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": ["vm:create"]
+          }
+        ]
+      }
+    },
+    "/marketplace/offers": {
+      "post": {
+        "tags": ["Marketplace"],
+        "description": "Get a list of providers' offers that match the given constraints (if any)",
+        "operationId": "Get offers on the marketplace",
+        "requestBody": {
+          "description": "Request body with the constraints to filter the offers",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferConstraints"
+              },
+              "example": {
+                "additionalResources": {
+                  "storage": [
+                    {
+                      "megabytes": 20480,
+                      "type": "NVMe"
+                    }
+                  ]
+                },
+                "basicConfiguration": "cpu-8-ram-16gb-storage-25gb",
+                "datacenter": {
+                  "countries": ["FR"]
+                },
+                "hardware": {
+                  "cpu": [
+                    {
+                      "architecture": "Zen",
+                      "manufacturer": "AMD"
+                    }
+                  ],
+                  "memory": [
+                    {
+                      "generation": "5",
+                      "type": "DDR"
+                    }
+                  ],
+                  "storage": [
+                    {
+                      "type": "NVMe"
+                    }
+                  ]
+                },
+                "maxTotalPricePerEpochUsd": "12.57426"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "List Of Offers",
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "API Key"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MarketOffering"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Wrong parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Auth token invalid or missing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Not allowed to call this endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Unexpected server error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": ["vm:create"]
+          }
+        ]
+      }
+    },
+    "/ssh_keys": {
+      "get": {
+        "tags": ["SSH keys"],
+        "description": "List all SSH keys",
+        "operationId": "List SSH keys",
+        "responses": {
+          "200": {
+            "description": "List SSH Keys",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SshKey"
+                  }
+                },
+                "example": [
+                  {
+                    "active": true,
+                    "algorithm": "ssh-ed25519",
+                    "comment": "folex@mac.local",
+                    "createdAt": "+002024-01-01T00:00:000000000Z",
+                    "fingerprint": "SHA256:sINcLA/hlKG0nDpE9n233xEnXAgSISxq0/nVWbbx5A4",
+                    "name": "first",
+                    "public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKgJIjnDg1DjqOOxINs78oU3f7PJXIyq9uiNocNVhXNx folex@mac.local"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Wrong parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Auth token invalid or missing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Not allowed to call this endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Unexpected server error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": ["ssh_key:list"]
+          }
+        ]
+      },
+      "post": {
+        "tags": ["SSH keys"],
+        "description": "Create a new SSH key",
+        "operationId": "Create SSH key",
+        "requestBody": {
+          "description": "Create ssh key",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddSshKey"
+              },
+              "example": {
+                "name": "my-key",
+                "publicKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKgJIjnDg1DjqOOxINs78oU3f7PJXIyq9uiNocNVhXNx user@example.com"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ssh Key already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SshKey"
+                },
+                "example": {
+                  "active": true,
+                  "algorithm": "ssh-ed25519",
+                  "comment": "user@example.com",
+                  "fingerprint": "SHA256:sINcLA/hlKG0nDpE9n233xEnXAgSISxq0/nVWbbx5A4",
+                  "name": "my-key",
+                  "public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKgJIjnDg1DjqOOxINs78oU3f7PJXIyq9uiNocNVhXNx user@example.com"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Ssh Key created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SshKey"
+                },
+                "example": {
+                  "active": true,
+                  "algorithm": "ssh-ed25519",
+                  "comment": "user@example.com",
+                  "fingerprint": "SHA256:sINcLA/hlKG0nDpE9n233xEnXAgSISxq0/nVWbbx5A4",
+                  "name": "my-key",
+                  "public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKgJIjnDg1DjqOOxINs78oU3f7PJXIyq9uiNocNVhXNx user@example.com"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Wrong parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Auth token invalid or missing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Not allowed to call this endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Unexpected server error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": ["ssh_key:create"]
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["SSH keys"],
+        "description": "Remove an SSH key",
+        "operationId": "Remove SSH key",
+        "requestBody": {
+          "description": "Remove SSH key",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveSshKey"
+              },
+              "example": {
+                "fingerprint": "SHA256:sINcLA/hlKG0nDpE9n233xEnXAgSISxq0/nVWbbx5A4"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "SSH Key removed"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Wrong parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Auth token invalid or missing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Not allowed to call this endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Unexpected server error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": ["ssh_key:remove"]
+          }
+        ]
+      }
+    },
+    "/vms/v1": {
+      "delete": {
+        "tags": ["VMs"],
+        "description": "Remove an existing VM",
+        "operationId": "Remove a VM",
+        "requestBody": {
+          "description": "Structure with the deal ID of the VM to remove",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveVm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "VM Removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VmRemoved"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Wrong parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Auth token invalid or missing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Not allowed to call this endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Unexpected server error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": ["vm:remove"]
+          }
+        ]
+      }
+    },
+    "/vms/v2": {
+      "get": {
+        "tags": ["VMs"],
+        "description": "Returns a list of all running VM instances for the current user",
+        "operationId": "Get running instances",
+        "responses": {
+          "201": {
+            "description": "Get running instances",
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "API Key"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RunningInstance"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Wrong parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Auth token invalid or missing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Not allowed to call this endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Unexpected server error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": ["vm:list"]
+          }
+        ]
+      },
+      "patch": {
+        "tags": ["VMs"],
+        "description": "Update an existing VM",
+        "operationId": "Update a VM",
+        "requestBody": {
+          "description": "Structure with the VM ID to update, array with the ports to open (optional) and the VM name (optional). If a field is not provided, it will not be updated.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Updated VM",
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "API Key"
+              }
+            },
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Wrong parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Auth token invalid or missing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Not allowed to call this endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Unexpected server error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": ["vm:update"]
+          }
+        ]
+      }
+    },
+    "/vms/v3": {
+      "post": {
+        "tags": ["VMs"],
+        "description": "Create one or more virtual machines on the Fluence marketplace",
+        "operationId": "Create a new VM",
+        "requestBody": {
+          "description": "Structure with your configuration requirements, desired number of instances and the deployment configuration",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVmV3"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created VM",
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "API Key"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Vm"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Wrong parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Auth token invalid or missing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Not allowed to call this endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Unexpected server error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": ["vm:create"]
+          }
+        ]
+      }
+    },
+    "/vms/v3/estimate": {
+      "post": {
+        "tags": ["VMs"],
+        "description": "Calculate the estimated deposit amount for a deployment",
+        "operationId": "Estimate deposit amount",
+        "requestBody": {
+          "description": "Structure with your configuration requirements and desired number of instances",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstimateDeposit"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully estimated deposit amount",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstimatedDepositV3"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Wrong parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Auth token invalid or missing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Not allowed to call this endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "example": {
+                  "error": "Unexpected server error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": ["vm:create"]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FluenceProviderConfig": {
+        "type": "object",
+        "required": ["apiKey"],
+        "properties": {
+          "apiKey": {
+            "type": "string",
+            "description": "API key for authenticating to Fluence"
+          },
+          "apiUrl": {
+            "type": "string",
+            "description": "Base URL for the Fluence API",
+            "default": "https://api.fluence.dev"
+          }
+        }
+      },
+      "AddSshKey": {
+        "type": "object",
+        "required": ["publicKey", "name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "A human-readable display name for this key, used to easily identify the SSH keys when they are displayed."
+          },
+          "publicKey": {
+            "type": "string",
+            "description": "The public key in OpenSSH format. Supported algorithms are:\n- ECDSA (nistp256, nistp384, nistp521)\n- RSA\n- ED25519"
+          }
+        }
+      },
+      "AdditionalResources": {
+        "type": "object",
+        "properties": {
+          "storage": {
+            "type": ["array", "null"],
+            "items": {
+              "$ref": "#/components/schemas/AdditionalStorage"
+            }
+          }
+        }
+      },
+      "AdditionalStorage": {
+        "type": "object",
+        "required": ["type", "megabytes"],
+        "properties": {
+          "megabytes": {
+            "$ref": "#/components/schemas/i64"
+          },
+          "type": {
+            "$ref": "#/components/schemas/StorageType"
+          }
+        }
+      },
+      "AdditionalSupply": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Resource"
+          },
+          {
+            "type": "object",
+            "required": ["supply", "units"],
+            "properties": {
+              "perVmLimit": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/i64"
+                  }
+                ]
+              },
+              "supply": {
+                "$ref": "#/components/schemas/i64"
+              },
+              "units": {
+                "type": "string",
+                "example": "MiB"
+              }
+            }
+          }
+        ],
+        "description": "A description of how much Hardware Resource Quantity can be bought on top of a Basic Configuration preset."
+      },
+      "AvailableHardware": {
+        "type": "object",
+        "required": ["cpu", "memory", "storage"],
+        "properties": {
+          "cpu": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CpuHardware"
+            }
+          },
+          "memory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemoryHardware"
+            }
+          },
+          "storage": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StorageHardware"
+            }
+          }
+        }
+      },
+      "ConfigurationPrice": {
+        "type": "object",
+        "required": ["slug", "price"],
+        "properties": {
+          "price": {
+            "type": "string",
+            "example": "0.24"
+          },
+          "slug": {
+            "type": "string"
+          }
+        }
+      },
+      "CpuHardware": {
+        "type": "object",
+        "required": ["manufacturer", "architecture"],
+        "properties": {
+          "architecture": {
+            "type": "string"
+          },
+          "manufacturer": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateVmV3": {
+        "type": "object",
+        "required": ["vmConfiguration", "instances"],
+        "properties": {
+          "constraints": {
+            "$ref": "#/components/schemas/OfferConstraints"
+          },
+          "instances": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "vmConfiguration": {
+            "$ref": "#/components/schemas/VmConfiguration"
+          }
+        }
+      },
+      "Datacenter": {
+        "type": "object",
+        "required": [
+          "countryCode",
+          "cityCode",
+          "cityIndex",
+          "tier",
+          "certifications"
+        ],
+        "properties": {
+          "certifications": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cityCode": {
+            "type": "string"
+          },
+          "cityIndex": {
+            "type": "integer",
+            "format": "u-int32",
+            "minimum": 0
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "tier": {
+            "type": "integer",
+            "format": "u-int32",
+            "minimum": 0
+          }
+        }
+      },
+      "DatacenterConstraint": {
+        "type": "object",
+        "required": ["countries"],
+        "properties": {
+          "countries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        }
+      },
+      "DatacenterExtended": {
+        "type": "object",
+        "required": [
+          "id",
+          "countryCode",
+          "cityCode",
+          "cityIndex",
+          "tier",
+          "certifications"
+        ],
+        "properties": {
+          "certifications": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cityCode": {
+            "type": "string"
+          },
+          "cityIndex": {
+            "type": "integer",
+            "format": "u-int32",
+            "minimum": 0
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "example": "0x1"
+          },
+          "tier": {
+            "type": "integer",
+            "format": "u-int32",
+            "minimum": 0
+          }
+        }
+      },
+      "ErrorBody": {
+        "type": "object",
+        "description": "it may be useful to add id for unique error identification",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "The error message"
+          }
+        }
+      },
+      "EstimateDeposit": {
+        "type": "object",
+        "required": ["constraints", "instances"],
+        "properties": {
+          "constraints": {
+            "$ref": "#/components/schemas/OfferConstraints"
+          },
+          "instances": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "EstimatedDepositV3": {
+        "type": "object",
+        "required": [
+          "depositAmountUsdc",
+          "depositEpochs",
+          "totalPricePerEpoch",
+          "maxPricePerEpoch",
+          "instances"
+        ],
+        "properties": {
+          "depositAmountUsdc": {
+            "type": "string"
+          },
+          "depositEpochs": {
+            "type": "integer",
+            "format": "u-int64",
+            "minimum": 0
+          },
+          "instances": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "maxPricePerEpoch": {
+            "type": "string"
+          },
+          "totalPricePerEpoch": {
+            "type": "string"
+          }
+        }
+      },
+      "HardwareConstraints": {
+        "type": "object",
+        "properties": {
+          "cpu": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CpuHardware"
+            },
+            "uniqueItems": true
+          },
+          "memory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemoryHardware"
+            },
+            "uniqueItems": true
+          },
+          "storage": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StorageHardware"
+            },
+            "uniqueItems": true
+          }
+        }
+      },
+      "MarketOffering": {
+        "type": "object",
+        "required": [
+          "configuration",
+          "resources",
+          "datacenter",
+          "servers",
+          "maxAdditionalSupply"
+        ],
+        "properties": {
+          "configuration": {
+            "$ref": "#/components/schemas/ConfigurationPrice"
+          },
+          "datacenter": {
+            "$ref": "#/components/schemas/Datacenter"
+          },
+          "maxAdditionalSupply": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalSupply"
+            }
+          },
+          "resources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            }
+          },
+          "servers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServerOffering"
+            }
+          }
+        }
+      },
+      "MemoryHardware": {
+        "type": "object",
+        "required": ["type", "generation"],
+        "properties": {
+          "generation": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "NetworkType": {
+        "type": "string",
+        "enum": ["dedicated", "shared"]
+      },
+      "OfferConstraints": {
+        "type": "object",
+        "properties": {
+          "additionalResources": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/AdditionalResources"
+              }
+            ]
+          },
+          "basicConfiguration": {
+            "type": ["string", "null"]
+          },
+          "datacenter": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/DatacenterConstraint"
+              }
+            ]
+          },
+          "hardware": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/HardwareConstraints"
+              }
+            ]
+          },
+          "maxTotalPricePerEpochUsd": {
+            "type": ["string", "null"],
+            "example": "1.2"
+          }
+        }
+      },
+      "OpenPorts": {
+        "type": "object",
+        "required": ["port", "protocol"],
+        "properties": {
+          "port": {
+            "type": "integer",
+            "format": "u-int16",
+            "minimum": 0
+          },
+          "protocol": {
+            "$ref": "#/components/schemas/ProtocolType"
+          }
+        }
+      },
+      "PortSpec": {
+        "type": "object",
+        "required": ["port", "protocol"],
+        "properties": {
+          "port": {
+            "type": "integer",
+            "format": "u-int16",
+            "minimum": 0
+          },
+          "protocol": {
+            "$ref": "#/components/schemas/Protocol"
+          }
+        }
+      },
+      "Protocol": {
+        "type": "string",
+        "enum": ["tcp", "udp", "sctp"]
+      },
+      "ProtocolType": {
+        "type": "string",
+        "enum": ["tcp", "udp", "sctp"]
+      },
+      "RemoveSshKey": {
+        "type": "object",
+        "required": ["fingerprint"],
+        "properties": {
+          "fingerprint": {
+            "type": "string"
+          }
+        }
+      },
+      "RemoveVm": {
+        "type": "object",
+        "required": ["dealId"],
+        "properties": {
+          "dealId": {
+            "type": "string",
+            "example": "0xCbfC94101AE30f212790B6Da340fD071B5eee86D"
+          }
+        }
+      },
+      "Resource": {
+        "type": "object",
+        "required": ["type", "metadata", "price"],
+        "properties": {
+          "metadata": {
+            "$ref": "#/components/schemas/ResourceMetadata"
+          },
+          "price": {
+            "type": "string",
+            "example": "0.24"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ResourceType"
+          }
+        }
+      },
+      "ResourceMetadata": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["manufacturer", "brand", "architecture", "generation"],
+            "properties": {
+              "architecture": {
+                "type": "string"
+              },
+              "brand": {
+                "type": "string"
+              },
+              "generation": {
+                "type": "string"
+              },
+              "manufacturer": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "generation"],
+            "properties": {
+              "generation": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/StorageType"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["version"],
+            "properties": {
+              "version": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/NetworkType"
+              }
+            }
+          }
+        ]
+      },
+      "ResourceType": {
+        "type": "string",
+        "enum": [
+          "VCPU",
+          "RAM",
+          "STORAGE",
+          "PUBLIC_IP",
+          "NETWORK_BANDWIDTH",
+          "GPU"
+        ]
+      },
+      "RunningInstance": {
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "pricePerEpoch",
+          "resources",
+          "createdAt",
+          "nextBillingAt",
+          "reservedBalance"
+        ],
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "datacenter": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/DatacenterExtended"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "nextBillingAt": {
+            "type": "string",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "osImage": {
+            "type": ["string", "null"]
+          },
+          "ports": {
+            "type": ["array", "null"],
+            "items": {
+              "$ref": "#/components/schemas/PortSpec"
+            }
+          },
+          "pricePerEpoch": {
+            "type": "integer",
+            "format": "u-int64",
+            "minimum": 0
+          },
+          "publicIp": {
+            "type": ["string", "null"]
+          },
+          "reservedBalance": {
+            "type": "string"
+          },
+          "resources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            }
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "totalSpent": {
+            "type": ["string", "null"]
+          },
+          "vmName": {
+            "type": ["string", "null"]
+          }
+        }
+      },
+      "ServerOffering": {
+        "type": "object",
+        "required": ["availableBasicInstances", "additionalResources"],
+        "properties": {
+          "additionalResources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalSupply"
+            }
+          },
+          "availableBasicInstances": {
+            "type": "integer",
+            "format": "u-int64",
+            "description": "How many basic configurations can fit here\nNOTE: additional resources are not included and shared between all vms",
+            "minimum": 0
+          }
+        }
+      },
+      "SshKey": {
+        "type": "object",
+        "required": [
+          "name",
+          "fingerprint",
+          "algorithm",
+          "comment",
+          "publicKey",
+          "active",
+          "createdAt"
+        ],
+        "properties": {
+          "active": {
+            "type": "boolean"
+          },
+          "algorithm": {
+            "type": "string",
+            "description": "SSH Key algorithm",
+            "enum": [
+              "bcrypt",
+              "ssh-dss-cert-v01@openssh.com",
+              "ecdsa-sha2-nistp256-cert-v01@openssh.com",
+              "ecdsa-sha2-nistp384-cert-v01@openssh.com",
+              "ecdsa-sha2-nistp521-cert-v01@openssh.com",
+              "ssh-ed25519-cert-v01@openssh.com",
+              "ssh-rsa-cert-v01@openssh.com",
+              "sk-ecdsa-sha2-nistp256-cert-v01@openssh.com",
+              "sk-ssh-ed25519-cert-v01@openssh.com",
+              "ecdsa-sha2-nistp256",
+              "ecdsa-sha2-nistp384",
+              "ecdsa-sha2-nistp521"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "+002024-01-01T00:00:000000000Z"
+          },
+          "fingerprint": {
+            "type": "string",
+            "description": "ssh key fingerprint in base64",
+            "examples": ["SHA256:pOb819EOwgV/RWGe74uaQnKMaHrNG4022fjPh1KBx7s"]
+          },
+          "name": {
+            "type": "string"
+          },
+          "publicKey": {
+            "type": "string",
+            "description": "In OpenSSH format"
+          }
+        }
+      },
+      "Status": {
+        "type": "string",
+        "description": "```solidity\nenum Status { INSUFFICIENT_FUNDS, ACTIVE, ENDED, NOT_ENOUGH_WORKERS, SMALL_BALANCE }\n```",
+        "enum": [
+          "INSUFFICIENT_FUNDS",
+          "ACTIVE",
+          "ENDED",
+          "NOT_ENOUGH_WORKERS",
+          "SMALL_BALANCE",
+          "__Invalid"
+        ]
+      },
+      "StorageHardware": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/StorageType"
+          }
+        }
+      },
+      "StorageType": {
+        "type": "string",
+        "enum": ["HDD", "SSD", "NVMe"]
+      },
+      "String": {
+        "type": "string"
+      },
+      "UpdateVm": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "0xCbfC94101AE30f212790B6Da340fD071B5eee86D"
+          },
+          "openPorts": {
+            "type": ["array", "null"],
+            "items": {
+              "$ref": "#/components/schemas/OpenPorts"
+            }
+          },
+          "vmName": {
+            "type": ["string", "null"]
+          }
+        }
+      },
+      "Vm": {
+        "type": "object",
+        "required": ["dealId", "peerId", "appCid"],
+        "properties": {
+          "appCid": {
+            "type": "string",
+            "example": "bafkreihqjkkphghotzkjd5h4bnzh6n2ysmg6qbm2mk6dnlsm3r7zfwoo4y"
+          },
+          "dealId": {
+            "type": "string",
+            "example": "0xCbfC94101AE30f212790B6Da340fD071B5eee86D"
+          },
+          "peerId": {
+            "type": "string",
+            "example": "12D3KooWHnPKNkhfvwEVQ5TJGEnD5LaXo6UHEG5eVXnhRLixfhXm"
+          }
+        }
+      },
+      "VmConfiguration": {
+        "type": "object",
+        "required": ["name", "sshKeys", "openPorts", "osImage"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "openPorts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OpenPorts"
+            }
+          },
+          "osImage": {
+            "type": "string",
+            "example": "https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img"
+          },
+          "sshKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/String"
+            }
+          }
+        }
+      },
+      "VmRemoved": {
+        "type": "object",
+        "required": ["txHash"],
+        "properties": {
+          "txHash": {
+            "type": "string",
+            "example": "0xec8cf804df54d73ff091cb73d81bb59c05aa8243996ed4efb7992c4a44a768cf"
+          }
+        }
+      },
+      "i64": {
+        "type": "integer",
+        "format": "int64"
+      }
+    },
+    "responses": {
+      "ErrorBody": {
+        "description": "it may be useful to add id for unique error identification",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "description": "it may be useful to add id for unique error identification",
+              "required": ["error"],
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "The error message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "api_key": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "api_key"
+      },
+      "token_jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT token issued by Web3Auth"
+      }
+    }
+  },
+  "security": [
+    {
+      "api_key": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "SSH keys",
+      "description": "Endpoints to manage SSH keys"
+    },
+    {
+      "name": "VMs",
+      "description": "Endpoints to create, view, update and delete VMs"
+    },
+    {
+      "name": "Marketplace",
+      "description": "Endpoints to explore the compute Marketplace and find compute resources that match your hardware, location or budget requirements."
+    }
+  ]
+}

@@ -1,0 +1,418 @@
+{
+	"datasources": [
+		{
+			"name": "order",
+			"schema": {
+				"attributes": [
+					{
+						"name": "id",
+						"int64": {
+							"computed_optional_required": "required",
+							"description": "ID of order that needs to be fetched"
+						}
+					},
+					{
+						"name": "complete",
+						"bool": {
+							"computed_optional_required": "computed"
+						}
+					},
+					{
+						"name": "pet_id",
+						"int64": {
+							"computed_optional_required": "computed"
+						}
+					},
+					{
+						"name": "quantity",
+						"int64": {
+							"computed_optional_required": "computed"
+						}
+					},
+					{
+						"name": "ship_date",
+						"string": {
+							"computed_optional_required": "computed",
+							"description": "A field representing the date and time an order will be shipped by"
+						}
+					},
+					{
+						"name": "status",
+						"string": {
+							"computed_optional_required": "computed",
+							"description": "Order status, possible values - 'placed', 'approved', or 'delivered'"
+						}
+					}
+				]
+			}
+		},
+		{
+			"name": "pet",
+			"schema": {
+				"attributes": [
+					{
+						"name": "id",
+						"int64": {
+							"computed_optional_required": "required",
+							"description": "ID of pet to return"
+						}
+					},
+					{
+						"name": "category",
+						"single_nested": {
+							"computed_optional_required": "computed",
+							"attributes": [
+								{
+									"name": "id",
+									"int64": {
+										"computed_optional_required": "computed"
+									}
+								},
+								{
+									"name": "name",
+									"string": {
+										"computed_optional_required": "computed",
+										"description": "The category name, possible values - 'dog', 'cat', 'bird', or 'other'"
+									}
+								}
+							],
+							"description": "Category containing classification info about the pet"
+						}
+					},
+					{
+						"name": "name",
+						"string": {
+							"computed_optional_required": "computed",
+							"description": "The pet's full name"
+						}
+					},
+					{
+						"name": "photo_urls",
+						"list": {
+							"computed_optional_required": "computed",
+							"element_type": {
+								"string": {}
+							}
+						}
+					},
+					{
+						"name": "status",
+						"string": {
+							"computed_optional_required": "computed",
+							"description": "pet status in the store"
+						}
+					},
+					{
+						"name": "tags",
+						"list_nested": {
+							"computed_optional_required": "computed",
+							"nested_object": {
+								"attributes": [
+									{
+										"name": "id",
+										"int64": {
+											"computed_optional_required": "computed"
+										}
+									},
+									{
+										"name": "name",
+										"string": {
+											"computed_optional_required": "computed"
+										}
+									}
+								]
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"name": "pets",
+			"schema": {
+				"attributes": [
+					{
+						"name": "pets",
+						"set_nested": {
+							"computed_optional_required": "computed",
+							"nested_object": {
+								"attributes": [
+									{
+										"name": "category",
+										"single_nested": {
+											"computed_optional_required": "computed",
+											"attributes": [
+												{
+													"name": "id",
+													"int64": {
+														"computed_optional_required": "computed"
+													}
+												},
+												{
+													"name": "name",
+													"string": {
+														"computed_optional_required": "computed"
+													}
+												}
+											]
+										}
+									},
+									{
+										"name": "id",
+										"int64": {
+											"computed_optional_required": "computed"
+										}
+									},
+									{
+										"name": "name",
+										"string": {
+											"computed_optional_required": "computed"
+										}
+									},
+									{
+										"name": "photo_urls",
+										"list": {
+											"computed_optional_required": "computed",
+											"element_type": {
+												"string": {}
+											}
+										}
+									},
+									{
+										"name": "tags",
+										"list_nested": {
+											"computed_optional_required": "computed",
+											"nested_object": {
+												"attributes": [
+													{
+														"name": "id",
+														"int64": {
+															"computed_optional_required": "computed"
+														}
+													},
+													{
+														"name": "name",
+														"string": {
+															"computed_optional_required": "computed"
+														}
+													}
+												]
+											}
+										}
+									}
+								]
+							}
+						}
+					}
+				]
+			}
+		}
+	],
+	"provider": {
+		"name": "petstore"
+	},
+	"resources": [
+		{
+			"name": "order",
+			"schema": {
+				"attributes": [
+					{
+						"name": "complete",
+						"bool": {
+							"computed_optional_required": "computed_optional"
+						}
+					},
+					{
+						"name": "id",
+						"int64": {
+							"computed_optional_required": "computed_optional",
+							"description": "ID of order that needs to be fetched"
+						}
+					},
+					{
+						"name": "pet_id",
+						"int64": {
+							"computed_optional_required": "computed_optional"
+						}
+					},
+					{
+						"name": "quantity",
+						"int64": {
+							"computed_optional_required": "computed_optional"
+						}
+					},
+					{
+						"name": "ship_date",
+						"string": {
+							"computed_optional_required": "computed_optional",
+							"description": "A field representing the date and time an order will be shipped by"
+						}
+					},
+					{
+						"name": "status",
+						"string": {
+							"computed_optional_required": "computed_optional",
+							"description": "Order status, possible values - 'placed', 'approved', or 'delivered'",
+							"validators": [
+								{
+									"custom": {
+										"imports": [
+											{
+												"path": "github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+											}
+										],
+										"schema_definition": "stringvalidator.OneOf(\n\"placed\",\n\"approved\",\n\"delivered\",\n)"
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			"name": "pet",
+			"schema": {
+				"attributes": [
+					{
+						"name": "category",
+						"single_nested": {
+							"computed_optional_required": "computed_optional",
+							"attributes": [
+								{
+									"name": "id",
+									"int64": {
+										"computed_optional_required": "computed_optional"
+									}
+								},
+								{
+									"name": "name",
+									"string": {
+										"computed_optional_required": "computed_optional",
+										"description": "The category name, possible values - 'dog', 'cat', 'bird', or 'other'"
+									}
+								}
+							],
+							"description": "Category containing classification info about the pet"
+						}
+					},
+					{
+						"name": "id",
+						"int64": {
+							"computed_optional_required": "computed_optional",
+							"description": "ID of pet to return"
+						}
+					},
+					{
+						"name": "name",
+						"string": {
+							"computed_optional_required": "required",
+							"description": "The pet's full name"
+						}
+					},
+					{
+						"name": "photo_urls",
+						"list": {
+							"computed_optional_required": "required",
+							"element_type": {
+								"string": {}
+							}
+						}
+					},
+					{
+						"name": "status",
+						"string": {
+							"computed_optional_required": "computed_optional",
+							"description": "pet status in the store",
+							"validators": [
+								{
+									"custom": {
+										"imports": [
+											{
+												"path": "github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+											}
+										],
+										"schema_definition": "stringvalidator.OneOf(\n\"available\",\n\"pending\",\n\"sold\",\n)"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "tags",
+						"list_nested": {
+							"computed_optional_required": "computed_optional",
+							"nested_object": {
+								"attributes": [
+									{
+										"name": "id",
+										"int64": {
+											"computed_optional_required": "required"
+										}
+									},
+									{
+										"name": "name",
+										"string": {
+											"computed_optional_required": "computed_optional"
+										}
+									}
+								]
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"name": "user",
+			"schema": {
+				"attributes": [
+					{
+						"name": "email",
+						"string": {
+							"computed_optional_required": "computed_optional"
+						}
+					},
+					{
+						"name": "first_name",
+						"string": {
+							"computed_optional_required": "computed_optional"
+						}
+					},
+					{
+						"name": "id",
+						"int64": {
+							"computed_optional_required": "computed_optional"
+						}
+					},
+					{
+						"name": "last_name",
+						"string": {
+							"computed_optional_required": "computed_optional"
+						}
+					},
+					{
+						"name": "password",
+						"string": {
+							"computed_optional_required": "computed_optional"
+						}
+					},
+					{
+						"name": "phone",
+						"string": {
+							"computed_optional_required": "computed_optional"
+						}
+					},
+					{
+						"name": "user_status",
+						"int64": {
+							"computed_optional_required": "computed_optional",
+							"description": "User Status"
+						}
+					}
+				]
+			}
+		}
+	],
+	"version": "0.1"
+}

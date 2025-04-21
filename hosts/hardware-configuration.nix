@@ -16,10 +16,10 @@
       "ext4"
       "xfs"
       "vfat"
-      "nfs"
     ];
     growPartition = true;
     kernelParams = lib.mkForce [ ];
+    loader.grub.device = "/dev/vda";
 
     # clear /tmp on boot to get a stateless /tmp directory.
     tmp.cleanOnBoot = true;

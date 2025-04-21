@@ -1,0 +1,79 @@
+func (v {{.Name}}Value) To{{.AssocExtType.ToPascalCase}}(ctx context.Context) ({{.AssocExtType.Type}}, diag.Diagnostics) {
+var diags diag.Diagnostics
+
+if v.IsNull() {
+return nil, diags
+}
+
+if v.IsUnknown() {
+diags.Append(diag.NewErrorDiagnostic(
+"{{.Name}}Value Value Is Unknown",
+`"{{.Name}}Value" is unknown.`,
+))
+
+return nil, diags
+}
+
+{{- range $key, $value := .ToFuncs}}
+{{- if $value.AssocExtType}}
+
+{{$value.AssocExtType.ToCamelCase}}, d := v.{{$key.ToPrefixPascalCase $.Name}}.To{{$value.AssocExtType.ToPascalCase}}(ctx)
+
+diags.Append(d...)
+
+if diags.HasError() {
+return nil, diags
+}
+{{- else if $value.CollectionType.GoType}}
+
+var {{$key.ToCamelCase}}Field {{$value.CollectionType.GoType}}
+
+d := v.{{$key.ToPrefixPascalCase $.Name}}.ElementsAs(ctx, &{{$key.ToCamelCase}}Field, false)
+
+diags.Append(d...)
+
+if diags.HasError() {
+return nil, diags
+}
+{{- else if $value.ObjectType}}
+
+attributes := v.{{$key.ToPrefixPascalCase $.Name}}.Attributes()
+
+{{- range $objectTypeKey, $objectTypeVal := $value.ObjectType}}
+
+{{$key.ToCamelCase}}Field{{$objectTypeKey.ToPascalCase}}, ok := attributes["{{$objectTypeKey}}"].({{$objectTypeVal.Type}})
+
+if !ok {
+diags.Append(diag.NewErrorDiagnostic(
+"{{$key.ToPrefixPascalCase $.Name}} Field {{$objectTypeKey}} Is Wrong Type",
+fmt.Sprintf(`{{$key.ToPrefixPascalCase $.Name}} field {{$objectTypeKey}} expected to be {{$objectTypeVal.Type}}, was: %T`, attributes["bool"]),
+))
+
+return nil, diags
+}
+{{- end}}
+{{- end}}
+{{- end}}
+
+return &{{.AssocExtType.TypeReference}}{
+{{- range $key, $value := .ToFuncs}}
+{{- if $value.AssocExtType}}
+{{$key.ToPascalCase}}: {{$value.AssocExtType.ToCamelCase}},
+{{- else if $value.Default}}
+{{$key.ToPascalCase}}: v.{{$key.ToPrefixPascalCase $.Name}}.{{$value.Default}}(),
+{{- else if $value.CollectionType.GoType}}
+{{$key.ToPascalCase}}: {{$key.ToCamelCase}}Field,
+{{- else if $value.ObjectType}}
+{{$key.ToPascalCase}}: struct {
+{{- range $objectTypeKey, $objectTypeVal := $value.ObjectType}}
+{{$objectTypeKey.ToPascalCase}} {{$objectTypeVal.GoType}}
+{{- end}}
+}{
+{{- range $objectTypeKey, $objectTypeVal := $value.ObjectType}}
+{{$objectTypeKey.ToPascalCase}}: {{$key.ToCamelCase}}Field{{$objectTypeKey.ToPascalCase}}.{{$objectTypeVal.ToFunc}}(),
+{{- end}}
+},
+{{- end}}
+{{- end}}
+}, diags
+}

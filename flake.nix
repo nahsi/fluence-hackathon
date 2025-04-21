@@ -1,5 +1,5 @@
 {
-  description = "A flake to bootstrap a VM image for Fluence";
+  description = "A flake to bootstrap a VM image on Fluence";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
@@ -70,11 +70,12 @@
           ];
         };
 
-        fluence-hack = lib.nixosSystem {
+        fluence-github-runner = lib.nixosSystem {
           inherit specialArgs;
           modules = [
             comin.nixosModules.comin
             ragenix.nixosModules.default
+            ./hosts/fluence-github-runner
           ];
         };
       };
@@ -82,26 +83,6 @@
       packages.${system} = {
         # nix build .#kubevirt-image
         kubevirt-image = self.nixosConfigurations.init.config.system.build.kubevirtImage;
-
-        # # nix build .#proxmox-image-uncompressed
-        # kubevirt-image-uncompressed = pkgs.stdenv.mkDerivation {
-        #   name = "kubevirt-image-uncompressed";
-        #   dontUnpack = true;
-        #   installPhase = ''
-        #     # create output directory
-        #     mkdir -p $out/
-        #
-        #     # basename of the vma file (without .zst)
-        #     export filename=$(basename ${
-        #       self.packages.${system}.kubevirt-image
-        #     }/vzdump-qemu-nixos-*.vma.zst .zst)
-        #
-        #     # decompress the vma file and write it to the output directory
-        #     ${pkgs.zstd}/bin/zstd -d ${
-        #       self.packages.${system}.kubevirt-image
-        #     }/vzdump-qemu-nixos-*.vma.zst -o $out/$filename
-        #   '';
-        # };
       };
     };
 }

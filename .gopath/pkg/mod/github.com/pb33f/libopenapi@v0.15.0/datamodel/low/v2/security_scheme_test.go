@@ -1,0 +1,97 @@
+// Copyright 2022 Princess B33f Heavy Industries / Dave Shanley
+// SPDX-License-Identifier: MIT
+
+package v2
+
+import (
+	"context"
+	"testing"
+
+	"github.com/pb33f/libopenapi/datamodel/low"
+	"github.com/pb33f/libopenapi/index"
+	"github.com/pb33f/libopenapi/orderedmap"
+	"github.com/stretchr/testify/assert"
+	"gopkg.in/yaml.v3"
+)
+
+func TestSecurityScheme_Build_Borked(t *testing.T) {
+	yml := `scopes:
+  $ref: break`
+
+	var idxNode yaml.Node
+	mErr := yaml.Unmarshal([]byte(yml), &idxNode)
+	assert.NoError(t, mErr)
+	idx := index.NewSpecIndex(&idxNode)
+
+	var n SecurityScheme
+	err := low.BuildModel(&idxNode, &n)
+	assert.NoError(t, err)
+
+	err = n.Build(context.Background(), nil, idxNode.Content[0], idx)
+	assert.Error(t, err)
+}
+
+func TestSecurityScheme_Build_Scopes(t *testing.T) {
+	yml := `scopes:
+  some:thing: here
+  something: there`
+
+	var idxNode yaml.Node
+	mErr := yaml.Unmarshal([]byte(yml), &idxNode)
+	assert.NoError(t, mErr)
+	idx := index.NewSpecIndex(&idxNode)
+
+	var n SecurityScheme
+	err := low.BuildModel(&idxNode, &n)
+	assert.NoError(t, err)
+
+	err = n.Build(context.Background(), nil, idxNode.Content[0], idx)
+	assert.NoError(t, err)
+	assert.Equal(t, 2, orderedmap.Len(n.Scopes.Value.Values))
+
+}
+
+func TestSecurityScheme_Hash(t *testing.T) {
+	yml := `type: secure
+description: a very secure thing
+name: securityPerson
+in: my heart
+flow: watery
+authorizationUrl: https://pb33f.io
+tokenUrl: https://pb33f.io/token
+scopes:
+  fish:monkey
+x-beer: not for a while`
+
+	var idxNode yaml.Node
+	_ = yaml.Unmarshal([]byte(yml), &idxNode)
+	idx := index.NewSpecIndex(&idxNode)
+
+	var n SecurityScheme
+	_ = low.BuildModel(idxNode.Content[0], &n)
+	_ = n.Build(context.Background(), nil, idxNode.Content[0], idx)
+
+	yml2 := `in: my heart
+scopes:
+  fish:monkey
+name: securityPerson
+type: secure
+flow: watery
+description: a very secure thing
+tokenUrl: https://pb33f.io/token
+x-beer: not for a while
+authorizationUrl: https://pb33f.io
+`
+
+	var idxNode2 yaml.Node
+	_ = yaml.Unmarshal([]byte(yml2), &idxNode2)
+	idx2 := index.NewSpecIndex(&idxNode2)
+
+	var n2 SecurityScheme
+	_ = low.BuildModel(idxNode2.Content[0], &n2)
+	_ = n2.Build(context.Background(), nil, idxNode2.Content[0], idx2)
+
+	// hash
+	assert.Equal(t, n.Hash(), n2.Hash())
+	assert.Equal(t, 1, orderedmap.Len(n.GetExtensions()))
+}

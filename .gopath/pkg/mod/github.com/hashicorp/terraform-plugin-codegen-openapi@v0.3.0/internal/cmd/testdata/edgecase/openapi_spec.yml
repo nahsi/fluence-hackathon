@@ -1,0 +1,250 @@
+openapi: 3.1.0
+info:
+  title: EdgeCase API
+  description: This is a fake API spec that was built to test some of the less common API schema structures and their mapping in the OpenAPI to Framework code generator
+  version: 1.0.0
+paths:
+  /obj_no_type:
+    get:
+      summary: Test for objects that have no types!
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  string_prop:
+                    description: String inside an object!
+                    type: string
+                  nested_obj:
+                    properties:
+                      bool_prop:
+                        description: Bool inside a nested object!
+                        type: boolean
+  /nested_collections:
+    get:
+      summary: Test for nested collections (list within a list, set within a list, map within a list)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  double_nested_list:
+                    $ref: "#/components/schemas/double_nested_list_schema"
+                  double_nested_set:
+                    $ref: "#/components/schemas/double_nested_set_schema"
+                  double_nested_map:
+                    $ref: "#/components/schemas/double_nested_map_schema"
+                  triple_nested_map:
+                    $ref: "#/components/schemas/triple_nested_map_schema"
+  /map_test:
+    get:
+      summary: Test for MapNested attributes and Map attributes in a data source
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mapnested_prop:
+                    $ref: "#/components/schemas/mapnested_schema"
+                  map_prop:
+                    description: This is a map of floats
+                    type: object
+                    additionalProperties:
+                      type: number
+                      format: float
+    post:
+      summary: Test for MapNested attributes and Map attributes in a resource
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - mapnested_prop
+              properties:
+                mapnested_prop:
+                  $ref: "#/components/schemas/mapnested_schema"
+                mapnested_nullable:
+                  $ref: "#/components/schemas/mapnested_allof_oneof_nullable"
+                map_prop:
+                  description: This is a map of strings
+                  type: object
+                  additionalProperties:
+                    type: string
+                map_stringified:
+                  $ref: "#/components/schemas/map_allof_oneof_stringified"
+
+  /set_test:
+    get:
+      summary: Test for SetNested attributes and Set attributes in a data source
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  setnested_prop:
+                    $ref: "#/components/schemas/setnested_schema"
+                  set_prop:
+                    description: This is a set of strings
+                    type: array
+                    format: set
+                    items:
+                      type: string
+    post:
+      summary: Test for SetNested attributes and Set attributes in a resource
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - setnested_prop
+              properties:
+                setnested_prop:
+                  $ref: "#/components/schemas/setnested_schema"
+                set_prop:
+                  description: This is a set of strings
+                  type: array
+                  format: set
+                  items:
+                    type: string
+components:
+  schemas:
+    edgecase_provider:
+      description: This is the provider schema
+      type: object
+      required:
+        - string_prop
+        - triple_nested_map
+      properties:
+        string_prop:
+          description: String for the provider
+          type: string
+        bool_prop:
+          description: Bool for the provider
+          type: boolean
+        triple_nested_map:
+          $ref: "#/components/schemas/triple_nested_map_schema"
+    double_nested_list_schema:
+      description: This list has a list nested underneath!
+      type: array
+      items:
+        type: array
+        items:
+          type: string
+    double_nested_set_schema:
+      description: This set has a set nested underneath!
+      type: array
+      format: set
+      items:
+        type: array
+        format: set
+        items:
+          type: string
+    double_nested_map_schema:
+      description: This list has a map nested underneath!
+      type: array
+      items:
+        type: object
+        description: This is a double nested map of strings
+        additionalProperties:
+          type: string
+    triple_nested_map_schema:
+      description: This list has a set of maps nested underneath!
+      type: array
+      items:
+        type: array
+        format: set
+        items:
+          type: object
+          description: This is a triple nested map of objects
+          additionalProperties:
+            type: object
+            properties:
+              string_prop:
+                description: String inside a map!
+                type: string
+              bool_prop:
+                description: Bool inside a map!
+                type: boolean
+              ignore_me_1:
+                description: This property will be ignored!
+                type: string
+              obj_prop:
+                description: Object inside a map!
+                type: object
+                properties:
+                  number_prop:
+                    description: Number inside a map!
+                    type: number
+                  ignore_me_2:
+                    description: This property will be ignored!
+                    type: string
+    setnested_schema:
+      description: This is a set with a nested object
+      type: array
+      format: set
+      items:
+        type: object
+        properties:
+          string_prop:
+            description: String inside a set!
+            type: string
+          bool_prop:
+            description: Bool inside a set!
+            type: boolean
+    mapnested_schema:
+      description: This is a map with a nested object
+      type: object
+      additionalProperties:
+        type: object
+        properties:
+          string_prop:
+            description: String inside a map!
+            type: string
+          bool_prop:
+            description: Bool inside a map!
+            type: boolean
+    mapnested_allof_oneof_nullable:
+      description: This is a map with a nullable object
+      type: object
+      additionalProperties:
+        allOf:
+        - $ref: "#/components/schemas/nullable_object"
+    map_allof_oneof_stringified:
+      description: This is a map with a stringifed value
+      type: object
+      additionalProperties:
+        allOf:
+        - $ref: "#/components/schemas/stringable_number"
+    stringable_number:
+      oneOf:
+      - type: string
+      - type: number
+    nullable_object:
+      oneOf:
+      - type: object
+        required:
+        - string_prop
+        - bool_prop
+        properties:
+          string_prop:
+            description: String inside a map!
+            type: string
+          bool_prop:
+            description: Bool inside a map!
+            type: boolean
+      - type: "null"

@@ -1,0 +1,43 @@
+# generator_config.yml
+
+provider:
+  name: fluence
+  schema_ref: '#/components/schemas/FluenceProviderConfig'
+
+resources:
+  # SSH Keys resource (CRUD via /ssh_keys)
+  ssh_key:
+    create:
+      path: /ssh_keys
+      method: POST
+    read:
+      path: /ssh_keys
+      method: GET
+    delete:
+      path: /ssh_keys
+      method: DELETE
+
+  # Virtual Machines resource (create=v3, list+read=v2, update=v2, delete=v1)
+  vm:
+    create:
+      path: /vms/v3
+      method: POST
+    read:
+      path: /vms/v2
+      method: GET
+    update:
+      path: /vms/v2
+      method: PATCH
+    delete:
+      path: /vms/v1
+      method: DELETE
+
+data_sources:
+  # VM Instances listing (alias for vm read but exposed as a data source)
+  vm_instances:
+    read:
+      path: /vms/v2
+      method: GET
+    schema:
+      ignores:
+        - resources.metadata

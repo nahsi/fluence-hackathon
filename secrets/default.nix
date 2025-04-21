@@ -1,9 +1,9 @@
 {
   age.secrets = {
-    acme = {
-      file = ./acme.age;
-      owner = "acme";
-      group = "acme";
+    runner-token = {
+      file = ./runner-token.age;
+      owner = "root";
+      group = "root";
       mode = "400";
     };
   };

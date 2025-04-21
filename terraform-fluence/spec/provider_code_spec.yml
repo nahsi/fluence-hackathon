@@ -1,0 +1,557 @@
+{
+	"datasources": [
+		{
+			"name": "vm_instances",
+			"schema": {
+				"attributes": [
+					{
+						"name": "vm_instances",
+						"set_nested": {
+							"computed_optional_required": "computed",
+							"nested_object": {
+								"attributes": [
+									{
+										"name": "created_at",
+										"string": {
+											"computed_optional_required": "computed"
+										}
+									},
+									{
+										"name": "datacenter",
+										"single_nested": {
+											"computed_optional_required": "computed",
+											"attributes": [
+												{
+													"name": "certifications",
+													"list": {
+														"computed_optional_required": "computed",
+														"element_type": {
+															"string": {}
+														}
+													}
+												},
+												{
+													"name": "city_code",
+													"string": {
+														"computed_optional_required": "computed"
+													}
+												},
+												{
+													"name": "city_index",
+													"int64": {
+														"computed_optional_required": "computed"
+													}
+												},
+												{
+													"name": "country_code",
+													"string": {
+														"computed_optional_required": "computed"
+													}
+												},
+												{
+													"name": "id",
+													"string": {
+														"computed_optional_required": "computed"
+													}
+												},
+												{
+													"name": "tier",
+													"int64": {
+														"computed_optional_required": "computed"
+													}
+												}
+											]
+										}
+									},
+									{
+										"name": "id",
+										"string": {
+											"computed_optional_required": "computed"
+										}
+									},
+									{
+										"name": "next_billing_at",
+										"string": {
+											"computed_optional_required": "computed"
+										}
+									},
+									{
+										"name": "os_image",
+										"string": {
+											"computed_optional_required": "computed"
+										}
+									},
+									{
+										"name": "ports",
+										"list_nested": {
+											"computed_optional_required": "computed",
+											"nested_object": {
+												"attributes": [
+													{
+														"name": "port",
+														"int64": {
+															"computed_optional_required": "computed"
+														}
+													},
+													{
+														"name": "protocol",
+														"string": {
+															"computed_optional_required": "computed"
+														}
+													}
+												]
+											}
+										}
+									},
+									{
+										"name": "price_per_epoch",
+										"int64": {
+											"computed_optional_required": "computed"
+										}
+									},
+									{
+										"name": "public_ip",
+										"string": {
+											"computed_optional_required": "computed"
+										}
+									},
+									{
+										"name": "reserved_balance",
+										"string": {
+											"computed_optional_required": "computed"
+										}
+									},
+									{
+										"name": "resources",
+										"list_nested": {
+											"computed_optional_required": "computed",
+											"nested_object": {
+												"attributes": [
+													{
+														"name": "price",
+														"string": {
+															"computed_optional_required": "computed"
+														}
+													},
+													{
+														"name": "type",
+														"string": {
+															"computed_optional_required": "computed"
+														}
+													}
+												]
+											}
+										}
+									},
+									{
+										"name": "status",
+										"string": {
+											"computed_optional_required": "computed",
+											"description": "```solidity\nenum Status { INSUFFICIENT_FUNDS, ACTIVE, ENDED, NOT_ENOUGH_WORKERS, SMALL_BALANCE }\n```"
+										}
+									},
+									{
+										"name": "total_spent",
+										"string": {
+											"computed_optional_required": "computed"
+										}
+									},
+									{
+										"name": "vm_name",
+										"string": {
+											"computed_optional_required": "computed"
+										}
+									}
+								]
+							}
+						}
+					}
+				]
+			}
+		}
+	],
+	"provider": {
+		"name": "fluence",
+		"schema": {
+			"attributes": [
+				{
+					"name": "api_key",
+					"string": {
+						"optional_required": "required",
+						"description": "API key for authenticating to Fluence"
+					}
+				},
+				{
+					"name": "api_url",
+					"string": {
+						"optional_required": "optional",
+						"description": "Base URL for the Fluence API"
+					}
+				}
+			]
+		}
+	},
+	"resources": [
+		{
+			"name": "ssh_key",
+			"schema": {
+				"attributes": [
+					{
+						"name": "name",
+						"string": {
+							"computed_optional_required": "required",
+							"description": "A human-readable display name for this key, used to easily identify the SSH keys when they are displayed."
+						}
+					},
+					{
+						"name": "public_key",
+						"string": {
+							"computed_optional_required": "required",
+							"description": "The public key in OpenSSH format. Supported algorithms are:\n- ECDSA (nistp256, nistp384, nistp521)\n- RSA\n- ED25519"
+						}
+					},
+					{
+						"name": "active",
+						"bool": {
+							"computed_optional_required": "computed"
+						}
+					},
+					{
+						"name": "algorithm",
+						"string": {
+							"computed_optional_required": "computed",
+							"description": "SSH Key algorithm"
+						}
+					},
+					{
+						"name": "comment",
+						"string": {
+							"computed_optional_required": "computed"
+						}
+					},
+					{
+						"name": "created_at",
+						"string": {
+							"computed_optional_required": "computed"
+						}
+					},
+					{
+						"name": "fingerprint",
+						"string": {
+							"computed_optional_required": "computed",
+							"description": "ssh key fingerprint in base64"
+						}
+					}
+				]
+			}
+		},
+		{
+			"name": "vm",
+			"schema": {
+				"attributes": [
+					{
+						"name": "constraints",
+						"single_nested": {
+							"computed_optional_required": "computed_optional",
+							"attributes": [
+								{
+									"name": "additional_resources",
+									"single_nested": {
+										"computed_optional_required": "computed_optional",
+										"attributes": [
+											{
+												"name": "storage",
+												"list_nested": {
+													"computed_optional_required": "computed_optional",
+													"nested_object": {
+														"attributes": [
+															{
+																"name": "megabytes",
+																"int64": {
+																	"computed_optional_required": "required"
+																}
+															},
+															{
+																"name": "type",
+																"string": {
+																	"computed_optional_required": "required",
+																	"validators": [
+																		{
+																			"custom": {
+																				"imports": [
+																					{
+																						"path": "github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+																					}
+																				],
+																				"schema_definition": "stringvalidator.OneOf(\n\"HDD\",\n\"SSD\",\n\"NVMe\",\n)"
+																			}
+																		}
+																	]
+																}
+															}
+														]
+													}
+												}
+											}
+										]
+									}
+								},
+								{
+									"name": "basic_configuration",
+									"string": {
+										"computed_optional_required": "computed_optional"
+									}
+								},
+								{
+									"name": "datacenter",
+									"single_nested": {
+										"computed_optional_required": "computed_optional",
+										"attributes": [
+											{
+												"name": "countries",
+												"list": {
+													"computed_optional_required": "required",
+													"element_type": {
+														"string": {}
+													},
+													"validators": [
+														{
+															"custom": {
+																"imports": [
+																	{
+																		"path": "github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+																	}
+																],
+																"schema_definition": "listvalidator.UniqueValues()"
+															}
+														}
+													]
+												}
+											}
+										]
+									}
+								},
+								{
+									"name": "hardware",
+									"single_nested": {
+										"computed_optional_required": "computed_optional",
+										"attributes": [
+											{
+												"name": "cpu",
+												"list_nested": {
+													"computed_optional_required": "computed_optional",
+													"nested_object": {
+														"attributes": [
+															{
+																"name": "architecture",
+																"string": {
+																	"computed_optional_required": "required"
+																}
+															},
+															{
+																"name": "manufacturer",
+																"string": {
+																	"computed_optional_required": "required"
+																}
+															}
+														]
+													},
+													"validators": [
+														{
+															"custom": {
+																"imports": [
+																	{
+																		"path": "github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+																	}
+																],
+																"schema_definition": "listvalidator.UniqueValues()"
+															}
+														}
+													]
+												}
+											},
+											{
+												"name": "memory",
+												"list_nested": {
+													"computed_optional_required": "computed_optional",
+													"nested_object": {
+														"attributes": [
+															{
+																"name": "generation",
+																"string": {
+																	"computed_optional_required": "required"
+																}
+															},
+															{
+																"name": "type",
+																"string": {
+																	"computed_optional_required": "required"
+																}
+															}
+														]
+													},
+													"validators": [
+														{
+															"custom": {
+																"imports": [
+																	{
+																		"path": "github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+																	}
+																],
+																"schema_definition": "listvalidator.UniqueValues()"
+															}
+														}
+													]
+												}
+											},
+											{
+												"name": "storage",
+												"list_nested": {
+													"computed_optional_required": "computed_optional",
+													"nested_object": {
+														"attributes": [
+															{
+																"name": "type",
+																"string": {
+																	"computed_optional_required": "required",
+																	"validators": [
+																		{
+																			"custom": {
+																				"imports": [
+																					{
+																						"path": "github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+																					}
+																				],
+																				"schema_definition": "stringvalidator.OneOf(\n\"HDD\",\n\"SSD\",\n\"NVMe\",\n)"
+																			}
+																		}
+																	]
+																}
+															}
+														]
+													},
+													"validators": [
+														{
+															"custom": {
+																"imports": [
+																	{
+																		"path": "github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+																	}
+																],
+																"schema_definition": "listvalidator.UniqueValues()"
+															}
+														}
+													]
+												}
+											}
+										]
+									}
+								},
+								{
+									"name": "max_total_price_per_epoch_usd",
+									"string": {
+										"computed_optional_required": "computed_optional"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "instances",
+						"int64": {
+							"computed_optional_required": "required",
+							"validators": [
+								{
+									"custom": {
+										"imports": [
+											{
+												"path": "github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+											}
+										],
+										"schema_definition": "int64validator.AtLeast(0)"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "vm_configuration",
+						"single_nested": {
+							"computed_optional_required": "required",
+							"attributes": [
+								{
+									"name": "name",
+									"string": {
+										"computed_optional_required": "required"
+									}
+								},
+								{
+									"name": "open_ports",
+									"list_nested": {
+										"computed_optional_required": "required",
+										"nested_object": {
+											"attributes": [
+												{
+													"name": "port",
+													"int64": {
+														"computed_optional_required": "required",
+														"validators": [
+															{
+																"custom": {
+																	"imports": [
+																		{
+																			"path": "github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+																		}
+																	],
+																	"schema_definition": "int64validator.AtLeast(0)"
+																}
+															}
+														]
+													}
+												},
+												{
+													"name": "protocol",
+													"string": {
+														"computed_optional_required": "required",
+														"validators": [
+															{
+																"custom": {
+																	"imports": [
+																		{
+																			"path": "github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+																		}
+																	],
+																	"schema_definition": "stringvalidator.OneOf(\n\"tcp\",\n\"udp\",\n\"sctp\",\n)"
+																}
+															}
+														]
+													}
+												}
+											]
+										}
+									}
+								},
+								{
+									"name": "os_image",
+									"string": {
+										"computed_optional_required": "required"
+									}
+								},
+								{
+									"name": "ssh_keys",
+									"list": {
+										"computed_optional_required": "required",
+										"element_type": {
+											"string": {}
+										}
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	],
+	"version": "0.1"
+}

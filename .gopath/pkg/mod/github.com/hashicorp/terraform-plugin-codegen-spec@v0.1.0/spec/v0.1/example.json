@@ -1,0 +1,2809 @@
+{
+  "datasources": [
+    {
+      "name": "datasource",
+      "schema": {
+        "attributes": [
+          {
+            "name": "bool_attribute",
+            "bool": {
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "bool_attribute_custom_type",
+            "bool": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.BoolType",
+                "value_type": "basetypes.BoolValue"
+              }
+            }
+          },
+          {
+            "name": "bool_attribute_custom_type_import_alias",
+            "bool": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "alias": "fwtype",
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "fwtype.BoolType",
+                "value_type": "fwtype.BoolValue"
+              }
+            }
+          },
+          {
+            "name": "float64_attribute",
+            "float64": {
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "float64_attribute_custom_type",
+            "float64": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.Float64Type",
+                "value_type": "basetypes.Float64Value"
+              }
+            }
+          },
+          {
+            "name": "int64_attribute",
+            "int64": {
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "int64_attribute_custom_type",
+            "int64": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.Int64Type",
+                "value_type": "basetypes.Int64Value"
+              }
+            }
+          },
+          {
+            "name": "list_attribute",
+            "list": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "list_attribute_custom_type",
+            "list": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.ListType",
+                "value_type": "basetypes.ListValue"
+              },
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "list_attribute_element_type_string_custom_type",
+            "list": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "string": {
+                  "custom_type": {
+                    "import": {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                    },
+                    "type": "basetypes.StringType",
+                    "value_type": "basetypes.StringValue"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "list_map_attribute",
+            "list": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "map": {
+                  "element_type": {
+                    "string": {}
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "list_object_attribute",
+            "list": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "object": {
+                  "attribute_types": [
+                    {
+                      "name": "obj_string_attr",
+                      "string": {}
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "name": "list_object_object_attribute",
+            "list": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "object": {
+                  "attribute_types": [
+                    {
+                      "name": "obj_obj_attr",
+                      "object": {
+                        "attribute_types": [
+                          {
+                            "name": "obj_obj_string_attr",
+                            "string": {}
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "name": "map_attribute",
+            "map": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "map_attribute_custom_type",
+            "map": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.MapType",
+                "value_type": "basetypes.MapValue"
+              },
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "map_attribute_element_type_string_custom_type",
+            "map": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "string": {
+                  "custom_type": {
+                    "import": {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                    },
+                    "type": "basetypes.StringType",
+                    "value_type": "basetypes.StringValue"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "map_nested_bool_attribute",
+            "map_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "map_nested_bool_attribute_associated_external_type",
+            "map_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "associated_external_type": {
+                  "import": {
+                    "path": "example.com/apisdk"
+                  },
+                  "type": "*apisdk.Type"
+                },
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "number_attribute",
+            "number": {
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "number_attribute_custom_type",
+            "number": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.NumberType",
+                "value_type": "basetypes.NumberValue"
+              }
+            }
+          },
+          {
+            "name": "object_attribute",
+            "object": {
+              "computed_optional_required": "computed",
+              "attribute_types": [
+                {
+                  "name": "obj_string_attr",
+                  "string": {}
+                }
+              ]
+            }
+          },
+          {
+            "name": "object_attribute_attribute_types_object_custom_type",
+            "object": {
+              "computed_optional_required": "computed",
+              "attribute_types": [
+                {
+                  "name": "obj_object_attr",
+                  "object": {
+                    "attribute_types": [
+                      {
+                        "name": "obj_object_string_attr",
+                        "string": {}
+                      }
+                    ],
+                    "custom_type": {
+                      "import": {
+                        "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                      },
+                      "type": "basetypes.ObjectType",
+                      "value_type": "basetypes.ObjectValue"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "object_attribute_attribute_types_string_custom_type",
+            "object": {
+              "computed_optional_required": "computed",
+              "attribute_types": [
+                {
+                  "name": "obj_string_attr",
+                  "string": {
+                    "custom_type": {
+                      "import": {
+                        "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                      },
+                      "type": "basetypes.StringType",
+                      "value_type": "basetypes.StringValue"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "object_attribute_custom_type",
+            "object": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.ObjectType",
+                "value_type": "basetypes.ObjectValue"
+              },
+              "attribute_types": [
+                {
+                  "name": "obj_string_attr",
+                  "string": {}
+                }
+              ]
+            }
+          },
+          {
+            "name": "object_list_attribute",
+            "object": {
+              "computed_optional_required": "computed",
+              "attribute_types": [
+                {
+                  "name": "obj_list_attr",
+                  "list": {
+                    "element_type": {
+                      "string": {}
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "object_list_object_attribute",
+            "object": {
+              "computed_optional_required": "computed",
+              "attribute_types": [
+                {
+                  "name": "obj_list_attr",
+                  "list": {
+                    "element_type": {
+                      "object": {
+                        "attribute_types": [
+                          {
+                            "name": "obj_list_obj_attr",
+                            "string": {}
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "list_nested_bool_attribute",
+            "list_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "list_nested_list_nested_bool_attribute",
+            "list_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "list_nested_attribute",
+                    "list_nested": {
+                      "computed_optional_required": "computed",
+                      "nested_object": {
+                        "attributes": [
+                          {
+                            "name": "bool_attribute",
+                            "bool": {
+                              "computed_optional_required": "computed"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "list_nested_list_nested_list_attribute",
+            "list_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "list_nested_attribute",
+                    "list_nested": {
+                      "computed_optional_required": "computed",
+                      "nested_object": {
+                        "attributes": [
+                          {
+                            "name": "list_attribute",
+                            "list": {
+                              "computed_optional_required": "computed",
+                              "element_type": {
+                                "string": {}
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "list_nested_bool_attribute_associated_external_type",
+            "list_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "associated_external_type": {
+                  "import": {
+                    "path": "example.com/apisdk"
+                  },
+                  "type": "*apisdk.Type"
+                },
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "set_attribute",
+            "set": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "set_attribute_custom_type",
+            "set": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.SetType",
+                "value_type": "basetypes.SetValue"
+              },
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "set_attribute_element_type_string_custom_type",
+            "set": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "string": {
+                  "custom_type": {
+                    "import": {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                    },
+                    "type": "basetypes.StringType",
+                    "value_type": "basetypes.StringValue"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "set_nested_bool_attribute",
+            "set_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "set_nested_bool_attribute_associated_external_type",
+            "set_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "associated_external_type": {
+                  "import": {
+                    "path": "example.com/apisdk"
+                  },
+                  "type": "*apisdk.Type"
+                },
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "single_nested_bool_attribute",
+            "single_nested": {
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "computed_optional_required": "computed"
+                  }
+                }
+              ],
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "single_nested_single_nested_bool_attribute",
+            "single_nested": {
+              "attributes": [
+                {
+                  "name": "single_nested_attribute",
+                  "single_nested": {
+                    "attributes": [
+                      {
+                        "name": "bool_attribute",
+                        "bool": {
+                          "computed_optional_required": "computed"
+                        }
+                      }
+                    ],
+                    "computed_optional_required": "computed"
+                  }
+                }
+              ],
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "single_nested_single_nested_list_attribute",
+            "single_nested": {
+              "attributes": [
+                {
+                  "name": "single_nested_attribute",
+                  "single_nested": {
+                    "attributes": [
+                      {
+                        "name": "list_attribute",
+                        "list": {
+                          "computed_optional_required": "computed",
+                          "element_type": {
+                            "string": {}
+                          }
+                        }
+                      }
+                    ],
+                    "computed_optional_required": "computed"
+                  }
+                }
+              ],
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "single_nested_bool_attribute_associated_external_type",
+            "single_nested": {
+              "associated_external_type": {
+                "import": {
+                  "path": "example.com/apisdk"
+                },
+                "type": "*apisdk.Type"
+              },
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "computed_optional_required": "computed"
+                  }
+                }
+              ],
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "string_attribute",
+            "string": {
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "string_attribute_custom_type",
+            "string": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.StringType",
+                "value_type": "basetypes.StringValue"
+              }
+            }
+          }
+        ],
+        "blocks": [
+          {
+            "name": "list_nested_block_bool_attribute",
+            "list_nested": {
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "list_nested_list_nested_block_bool_attribute",
+            "list_nested": {
+              "nested_object": {
+                "blocks": [
+                  {
+                    "name": "list_nested_block",
+                    "list_nested": {
+                      "nested_object": {
+                        "attributes": [
+                          {
+                            "name": "bool_attribute",
+                            "bool": {
+                              "computed_optional_required": "computed"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "list_nested_block_object_attribute_list_nested_nested_block_list_attribute",
+            "list_nested": {
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "object_attribute",
+                    "object": {
+                      "computed_optional_required": "computed",
+                      "attribute_types": [
+                        {
+                          "name": "obj_string_attr",
+                          "string": {}
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "blocks": [
+                  {
+                    "name": "list_nested_block",
+                    "list_nested": {
+                      "nested_object": {
+                        "attributes": [
+                          {
+                            "name": "list_attribute",
+                            "list": {
+                              "computed_optional_required": "computed",
+                              "element_type": {
+                                "string": {}
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "list_nested_block_bool_attribute_associated_external_type",
+            "list_nested": {
+              "nested_object": {
+                "associated_external_type": {
+                  "import": {
+                    "path": "example.com/apisdk"
+                  },
+                  "type": "*apisdk.Type"
+                },
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "set_nested_block_bool_attribute",
+            "set_nested": {
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "set_nested_block_bool_attribute_associated_external_type",
+            "set_nested": {
+              "nested_object": {
+                "associated_external_type": {
+                  "import": {
+                    "path": "example.com/apisdk"
+                  },
+                  "type": "*apisdk.Type"
+                },
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "single_nested_block_bool_attribute",
+            "single_nested": {
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "computed_optional_required": "computed"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "single_nested_single_nested_block_bool_attribute",
+            "single_nested": {
+              "blocks": [
+                {
+                  "name": "single_nested_block",
+                  "single_nested": {
+                    "attributes": [
+                      {
+                        "name": "bool_attribute",
+                        "bool": {
+                          "computed_optional_required": "computed"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "single_nested_block_object_attribute_single_nested_list_nested_block_list_attribute",
+            "single_nested": {
+              "attributes": [
+                {
+                  "name": "object_attribute",
+                  "object": {
+                    "computed_optional_required": "computed",
+                    "attribute_types": [
+                      {
+                        "name": "obj_string_attr",
+                        "string": {}
+                      }
+                    ]
+                  }
+                }
+              ],
+              "blocks": [
+                {
+                  "name": "list_nested_block",
+                  "list_nested": {
+                    "nested_object": {
+                      "attributes": [
+                        {
+                          "name": "list_attribute",
+                          "list": {
+                            "computed_optional_required": "computed",
+                            "element_type": {
+                              "string": {}
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "single_nested_block_bool_attribute_associated_external_type",
+            "single_nested": {
+              "associated_external_type": {
+                "import": {
+                  "path": "example.com/apisdk"
+                },
+                "type": "*apisdk.Type"
+              },
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "computed_optional_required": "computed"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "provider": {
+    "name": "provider",
+    "schema": {
+      "attributes": [
+        {
+          "name": "bool_attribute",
+          "bool": {
+            "optional_required": "optional"
+          }
+        },
+        {
+          "name": "bool_attribute_custom_type",
+          "bool": {
+            "optional_required": "optional",
+            "custom_type": {
+              "import": {
+                "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+              },
+              "type": "basetypes.BoolType",
+              "value_type": "basetypes.BoolValue"
+            }
+          }
+        },
+        {
+          "name": "bool_attribute_custom_type_import_alias",
+          "bool": {
+            "optional_required": "optional",
+            "custom_type": {
+              "import": {
+                "alias": "fwtype",
+                "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+              },
+              "type": "fwtype.BoolType",
+              "value_type": "fwtype.BoolValue"
+            }
+          }
+        },
+        {
+          "name": "float64_attribute",
+          "float64": {
+            "optional_required": "optional"
+          }
+        },
+        {
+          "name": "float64_attribute_custom_type",
+          "float64": {
+            "optional_required": "optional",
+            "custom_type": {
+              "import": {
+                "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+              },
+              "type": "basetypes.Float64Type",
+              "value_type": "basetypes.Float64Value"
+            }
+          }
+        },
+        {
+          "name": "int64_attribute",
+          "int64": {
+            "optional_required": "optional"
+          }
+        },
+        {
+          "name": "int64_attribute_custom_type",
+          "int64": {
+            "optional_required": "optional",
+            "custom_type": {
+              "import": {
+                "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+              },
+              "type": "basetypes.Int64Type",
+              "value_type": "basetypes.Int64Value"
+            }
+          }
+        },
+        {
+          "name": "list_attribute",
+          "list": {
+            "optional_required": "optional",
+            "element_type": {
+              "string": {}
+            }
+          }
+        },
+        {
+          "name": "list_attribute_custom_type",
+          "list": {
+            "optional_required": "optional",
+            "custom_type": {
+              "import": {
+                "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+              },
+              "type": "basetypes.ListType",
+              "value_type": "basetypes.ListValue"
+            },
+            "element_type": {
+              "string": {}
+            }
+          }
+        },
+        {
+          "name": "list_attribute_element_type_string_custom_type",
+          "list": {
+            "optional_required": "optional",
+            "element_type": {
+              "string": {
+                "custom_type": {
+                  "import": {
+                    "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                  },
+                  "type": "basetypes.StringType",
+                  "value_type": "basetypes.StringValue"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "list_map_attribute",
+          "list": {
+            "optional_required": "optional",
+            "element_type": {
+              "map": {
+                "element_type": {
+                  "string": {}
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "list_object_attribute",
+          "list": {
+            "optional_required": "optional",
+            "element_type": {
+              "object": {
+                "attribute_types": [
+                  {
+                    "name": "obj_string_attr",
+                    "string": {}
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "list_object_object_attribute",
+          "list": {
+            "optional_required": "optional",
+            "element_type": {
+              "object": {
+                "attribute_types": [
+                  {
+                    "name": "obj_obj_attr",
+                    "object": {
+                      "attribute_types": [
+                        {
+                          "name": "obj_obj_string_attr",
+                          "string": {}
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "map_attribute",
+          "map": {
+            "optional_required": "optional",
+            "element_type": {
+              "string": {}
+            }
+          }
+        },
+        {
+          "name": "map_attribute_custom_type",
+          "map": {
+            "optional_required": "optional",
+            "custom_type": {
+              "import": {
+                "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+              },
+              "type": "basetypes.MapType",
+              "value_type": "basetypes.MapValue"
+            },
+            "element_type": {
+              "string": {}
+            }
+          }
+        },
+        {
+          "name": "map_attribute_element_type_string_custom_type",
+          "map": {
+            "optional_required": "optional",
+            "element_type": {
+              "string": {
+                "custom_type": {
+                  "import": {
+                    "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                  },
+                  "type": "basetypes.StringType",
+                  "value_type": "basetypes.StringValue"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "map_nested_bool_attribute",
+          "map_nested": {
+            "optional_required": "optional",
+            "nested_object": {
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "optional_required": "optional"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "map_nested_bool_attribute_associated_external_type",
+          "map_nested": {
+            "optional_required": "optional",
+            "nested_object": {
+              "associated_external_type": {
+                "import": {
+                  "path": "example.com/apisdk"
+                },
+                "type": "*apisdk.Type"
+              },
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "optional_required": "optional"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "number_attribute",
+          "number": {
+            "optional_required": "optional"
+          }
+        },
+        {
+          "name": "number_attribute_custom_type",
+          "number": {
+            "optional_required": "optional",
+            "custom_type": {
+              "import": {
+                "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+              },
+              "type": "basetypes.NumberType",
+              "value_type": "basetypes.NumberValue"
+            }
+          }
+        },
+        {
+          "name": "object_attribute",
+          "object": {
+            "optional_required": "optional",
+            "attribute_types": [
+              {
+                "name": "obj_string_attr",
+                "string": {}
+              }
+            ]
+          }
+        },
+        {
+          "name": "object_attribute_attribute_types_object_custom_type",
+          "object": {
+            "optional_required": "optional",
+            "attribute_types": [
+              {
+                "name": "obj_object_attr",
+                "object": {
+                  "attribute_types": [
+                    {
+                      "name": "obj_object_string_attr",
+                      "string": {}
+                    }
+                  ],
+                  "custom_type": {
+                    "import": {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                    },
+                    "type": "basetypes.ObjectType",
+                    "value_type": "basetypes.ObjectValue"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "object_attribute_attribute_types_string_custom_type",
+          "object": {
+            "optional_required": "optional",
+            "attribute_types": [
+              {
+                "name": "obj_string_attr",
+                "string": {
+                  "custom_type": {
+                    "import": {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                    },
+                    "type": "basetypes.StringType",
+                    "value_type": "basetypes.StringValue"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "object_attribute_custom_type",
+          "object": {
+            "optional_required": "optional",
+            "custom_type": {
+              "import": {
+                "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+              },
+              "type": "basetypes.ObjectType",
+              "value_type": "basetypes.ObjectValue"
+            },
+            "attribute_types": [
+              {
+                "name": "obj_string_attr",
+                "string": {}
+              }
+            ]
+          }
+        },
+        {
+          "name": "object_list_attribute",
+          "object": {
+            "optional_required": "optional",
+            "attribute_types": [
+              {
+                "name": "obj_list_attr",
+                "list": {
+                  "element_type": {
+                    "string": {}
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "object_list_object_attribute",
+          "object": {
+            "optional_required": "optional",
+            "attribute_types": [
+              {
+                "name": "obj_list_attr",
+                "list": {
+                  "element_type": {
+                    "object": {
+                      "attribute_types": [
+                        {
+                          "name": "obj_list_obj_attr",
+                          "string": {}
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "list_nested_bool_attribute",
+          "list_nested": {
+            "optional_required": "optional",
+            "nested_object": {
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "optional_required": "optional"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "list_nested_list_nested_bool_attribute",
+          "list_nested": {
+            "optional_required": "optional",
+            "nested_object": {
+              "attributes": [
+                {
+                  "name": "list_nested_attribute",
+                  "list_nested": {
+                    "optional_required": "optional",
+                    "nested_object": {
+                      "attributes": [
+                        {
+                          "name": "bool_attribute",
+                          "bool": {
+                            "optional_required": "optional"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "list_nested_list_nested_list_attribute",
+          "list_nested": {
+            "optional_required": "optional",
+            "nested_object": {
+              "attributes": [
+                {
+                  "name": "list_nested_attribute",
+                  "list_nested": {
+                    "optional_required": "optional",
+                    "nested_object": {
+                      "attributes": [
+                        {
+                          "name": "list_attribute",
+                          "list": {
+                            "optional_required": "optional",
+                            "element_type": {
+                              "string": {}
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "list_nested_bool_attribute_associated_external_type",
+          "list_nested": {
+            "optional_required": "optional",
+            "nested_object": {
+              "associated_external_type": {
+                "import": {
+                  "path": "example.com/apisdk"
+                },
+                "type": "*apisdk.Type"
+              },
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "optional_required": "optional"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "set_attribute",
+          "set": {
+            "optional_required": "optional",
+            "element_type": {
+              "string": {}
+            }
+          }
+        },
+        {
+          "name": "set_attribute_custom_type",
+          "set": {
+            "optional_required": "optional",
+            "custom_type": {
+              "import": {
+                "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+              },
+              "type": "basetypes.SetType",
+              "value_type": "basetypes.SetValue"
+            },
+            "element_type": {
+              "string": {}
+            }
+          }
+        },
+        {
+          "name": "set_attribute_element_type_string_custom_type",
+          "set": {
+            "optional_required": "optional",
+            "element_type": {
+              "string": {
+                "custom_type": {
+                  "import": {
+                    "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                  },
+                  "type": "basetypes.StringType",
+                  "value_type": "basetypes.StringValue"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "set_nested_bool_attribute",
+          "set_nested": {
+            "optional_required": "optional",
+            "nested_object": {
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "optional_required": "optional"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "set_nested_bool_attribute_associated_external_type",
+          "set_nested": {
+            "optional_required": "optional",
+            "nested_object": {
+              "associated_external_type": {
+                "import": {
+                  "path": "example.com/apisdk"
+                },
+                "type": "*apisdk.Type"
+              },
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "optional_required": "optional"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "single_nested_bool_attribute",
+          "single_nested": {
+            "attributes": [
+              {
+                "name": "bool_attribute",
+                "bool": {
+                  "optional_required": "optional"
+                }
+              }
+            ],
+            "optional_required": "optional"
+          }
+        },
+        {
+          "name": "single_nested_single_nested_bool_attribute",
+          "single_nested": {
+            "attributes": [
+              {
+                "name": "single_nested_attribute",
+                "single_nested": {
+                  "attributes": [
+                    {
+                      "name": "bool_attribute",
+                      "bool": {
+                        "optional_required": "optional"
+                      }
+                    }
+                  ],
+                  "optional_required": "optional"
+                }
+              }
+            ],
+            "optional_required": "optional"
+          }
+        },
+        {
+          "name": "single_nested_single_nested_list_attribute",
+          "single_nested": {
+            "attributes": [
+              {
+                "name": "single_nested_attribute",
+                "single_nested": {
+                  "attributes": [
+                    {
+                      "name": "list_attribute",
+                      "list": {
+                        "optional_required": "optional",
+                        "element_type": {
+                          "string": {}
+                        }
+                      }
+                    }
+                  ],
+                  "optional_required": "optional"
+                }
+              }
+            ],
+            "optional_required": "optional"
+          }
+        },
+        {
+          "name": "single_nested_bool_attribute_associated_external_type",
+          "single_nested": {
+            "associated_external_type": {
+              "import": {
+                "path": "example.com/apisdk"
+              },
+              "type": "*apisdk.Type"
+            },
+            "attributes": [
+              {
+                "name": "bool_attribute",
+                "bool": {
+                  "optional_required": "optional"
+                }
+              }
+            ],
+            "optional_required": "optional"
+          }
+        },
+        {
+          "name": "string_attribute",
+          "string": {
+            "optional_required": "optional"
+          }
+        },
+        {
+          "name": "string_attribute_custom_type",
+          "string": {
+            "optional_required": "optional",
+            "custom_type": {
+              "import": {
+                "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+              },
+              "type": "basetypes.StringType",
+              "value_type": "basetypes.StringValue"
+            }
+          }
+        }
+      ],
+      "blocks": [
+        {
+          "name": "list_nested_block_bool_attribute",
+          "list_nested": {
+            "nested_object": {
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "optional_required": "optional"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "list_nested_list_nested_block_bool_attribute",
+          "list_nested": {
+            "nested_object": {
+              "blocks": [
+                {
+                  "name": "list_nested_block",
+                  "list_nested": {
+                    "nested_object": {
+                      "attributes": [
+                        {
+                          "name": "bool_attribute",
+                          "bool": {
+                            "optional_required": "optional"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "list_nested_block_object_attribute_list_nested_nested_block_list_attribute",
+          "list_nested": {
+            "nested_object": {
+              "attributes": [
+                {
+                  "name": "object_attribute",
+                  "object": {
+                    "optional_required": "optional",
+                    "attribute_types": [
+                      {
+                        "name": "obj_string_attr",
+                        "string": {}
+                      }
+                    ]
+                  }
+                }
+              ],
+              "blocks": [
+                {
+                  "name": "list_nested_block",
+                  "list_nested": {
+                    "nested_object": {
+                      "attributes": [
+                        {
+                          "name": "list_attribute",
+                          "list": {
+                            "optional_required": "optional",
+                            "element_type": {
+                              "string": {}
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "list_nested_block_bool_attribute_associated_external_type",
+          "list_nested": {
+            "nested_object": {
+              "associated_external_type": {
+                "import": {
+                  "path": "example.com/apisdk"
+                },
+                "type": "*apisdk.Type"
+              },
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "optional_required": "optional"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "set_nested_block_bool_attribute",
+          "set_nested": {
+            "nested_object": {
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "optional_required": "optional"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "set_nested_block_bool_attribute_associated_external_type",
+          "set_nested": {
+            "nested_object": {
+              "associated_external_type": {
+                "import": {
+                  "path": "example.com/apisdk"
+                },
+                "type": "*apisdk.Type"
+              },
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "optional_required": "optional"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "single_nested_block_bool_attribute",
+          "single_nested": {
+            "attributes": [
+              {
+                "name": "bool_attribute",
+                "bool": {
+                  "optional_required": "optional"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "single_nested_single_nested_block_bool_attribute",
+          "single_nested": {
+            "blocks": [
+              {
+                "name": "single_nested_block",
+                "single_nested": {
+                  "attributes": [
+                    {
+                      "name": "bool_attribute",
+                      "bool": {
+                        "optional_required": "optional"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "single_nested_block_object_attribute_single_nested_list_nested_block_list_attribute",
+          "single_nested": {
+            "attributes": [
+              {
+                "name": "object_attribute",
+                "object": {
+                  "optional_required": "optional",
+                  "attribute_types": [
+                    {
+                      "name": "obj_string_attr",
+                      "string": {}
+                    }
+                  ]
+                }
+              }
+            ],
+            "blocks": [
+              {
+                "name": "list_nested_block",
+                "list_nested": {
+                  "nested_object": {
+                    "attributes": [
+                      {
+                        "name": "list_attribute",
+                        "list": {
+                          "optional_required": "optional",
+                          "element_type": {
+                            "string": {}
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "single_nested_block_bool_attribute_associated_external_type",
+          "single_nested": {
+            "associated_external_type": {
+              "import": {
+                "path": "example.com/apisdk"
+              },
+              "type": "*apisdk.Type"
+            },
+            "attributes": [
+              {
+                "name": "bool_attribute",
+                "bool": {
+                  "optional_required": "optional"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resources": [
+    {
+      "name": "resource",
+      "schema": {
+        "attributes": [
+          {
+            "name": "bool_attribute",
+            "bool": {
+              "computed_optional_required": "computed",
+              "plan_modifiers": [
+                {
+                  "requires_replace": {}
+                },
+                {
+                  "custom": {
+                    "imports": [
+                      {
+                        "path": "github.com/my_account/my_project/boolplanmodifier"
+                      }
+                    ],
+                    "schema_definition": "myboolplanmodifier.Modify()"
+                  }
+                }
+              ],
+              "validators": [
+                {
+                  "custom": {
+                    "imports": [
+                      {
+                        "path": "github.com/my_account/my_project/myboolvalidator"
+                      }
+                    ],
+                    "schema_definition": "myboolvalidator.Validate()"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "bool_attribute_custom_type",
+            "bool": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.BoolType",
+                "value_type": "basetypes.BoolValue"
+              }
+            }
+          },
+          {
+            "name": "bool_attribute_custom_type_import_alias",
+            "bool": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "alias": "fwtype",
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "fwtype.BoolType",
+                "value_type": "fwtype.BoolValue"
+              }
+            }
+          },
+          {
+            "name": "bool_attribute_default_static",
+            "bool": {
+              "computed_optional_required": "optional",
+              "default": {
+                "static": true
+              }
+            }
+          },
+          {
+            "name": "float64_attribute",
+            "float64": {
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "float64_attribute_custom_type",
+            "float64": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.Float64Type",
+                "value_type": "basetypes.Float64Value"
+              }
+            }
+          },
+          {
+            "name": "float64_attribute_default_static",
+            "float64": {
+              "computed_optional_required": "optional",
+              "default": {
+                "static": 123.45
+              }
+            }
+          },
+          {
+            "name": "int64_attribute",
+            "int64": {
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "int64_attribute_custom_type",
+            "int64": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.Int64Type",
+                "value_type": "basetypes.Int64Value"
+              }
+            }
+          },
+          {
+            "name": "int64_attribute_default_static",
+            "int64": {
+              "computed_optional_required": "optional",
+              "default": {
+                "static": 123
+              }
+            }
+          },
+          {
+            "name": "list_attribute",
+            "list": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "list_attribute_custom_type",
+            "list": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.ListType",
+                "value_type": "basetypes.ListValue"
+              },
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "list_attribute_default_custom",
+            "list": {
+              "computed_optional_required": "optional",
+              "default": {
+                "custom": {
+                  "imports": [
+                    {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/attr"
+                    },
+                    {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
+                    },
+                    {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/types"
+                    }
+                  ],
+                  "schema_definition": "listdefault.StaticValue(types.ListValueMust(types.String, []attr.Value{types.StringValue(\"example\")}))"
+                }
+              },
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "list_attribute_element_type_string_custom_type",
+            "list": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "string": {
+                  "custom_type": {
+                    "import": {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                    },
+                    "type": "basetypes.StringType",
+                    "value_type": "basetypes.StringValue"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "list_map_attribute",
+            "list": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "map": {
+                  "element_type": {
+                    "string": {}
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "list_object_attribute",
+            "list": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "object": {
+                  "attribute_types": [
+                    {
+                      "name": "obj_string_attr",
+                      "string": {}
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "name": "list_object_object_attribute",
+            "list": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "object": {
+                  "attribute_types": [
+                    {
+                      "name": "obj_obj_attr",
+                      "object": {
+                        "attribute_types": [
+                          {
+                            "name": "obj_obj_string_attr",
+                            "string": {}
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "name": "map_attribute",
+            "map": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "map_attribute_custom_type",
+            "map": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.MapType",
+                "value_type": "basetypes.MapValue"
+              },
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "map_attribute_element_type_string_custom_type",
+            "map": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "string": {
+                  "custom_type": {
+                    "import": {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                    },
+                    "type": "basetypes.StringType",
+                    "value_type": "basetypes.StringValue"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "map_nested_bool_attribute",
+            "map_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "map_nested_bool_attribute_associated_external_type",
+            "map_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "associated_external_type": {
+                  "import": {
+                    "path": "example.com/apisdk"
+                  },
+                  "type": "*apisdk.Type"
+                },
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "number_attribute",
+            "number": {
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "number_attribute_custom_type",
+            "number": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.NumberType",
+                "value_type": "basetypes.NumberValue"
+              }
+            }
+          },
+          {
+            "name": "number_attribute_default_custom",
+            "number": {
+              "computed_optional_required": "optional",
+              "default": {
+                "custom": {
+                  "imports": [
+                    {
+                      "path": "math/big"
+                    },
+                    {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/resource/schema/numberdefault"
+                    }
+                  ],
+                  "schema_definition": "numberdefault.StaticBigFloat(big.NewFloat(123.45))"
+                }
+              }
+            }
+          },
+          {
+            "name": "object_attribute",
+            "object": {
+              "computed_optional_required": "computed",
+              "attribute_types": [
+                {
+                  "name": "obj_string_attr",
+                  "string": {}
+                }
+              ]
+            }
+          },
+          {
+            "name": "object_attribute_attribute_types_object_custom_type",
+            "object": {
+              "computed_optional_required": "computed",
+              "attribute_types": [
+                {
+                  "name": "obj_object_attr",
+                  "object": {
+                    "attribute_types": [
+                      {
+                        "name": "obj_object_string_attr",
+                        "string": {}
+                      }
+                    ],
+                    "custom_type": {
+                      "import": {
+                        "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                      },
+                      "type": "basetypes.ObjectType",
+                      "value_type": "basetypes.ObjectValue"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "object_attribute_attribute_types_string_custom_type",
+            "object": {
+              "computed_optional_required": "computed",
+              "attribute_types": [
+                {
+                  "name": "obj_string_attr",
+                  "string": {
+                    "custom_type": {
+                      "import": {
+                        "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                      },
+                      "type": "basetypes.StringType",
+                      "value_type": "basetypes.StringValue"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "object_attribute_custom_type",
+            "object": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.ObjectType",
+                "value_type": "basetypes.ObjectValue"
+              },
+              "attribute_types": [
+                {
+                  "name": "obj_string_attr",
+                  "string": {}
+                }
+              ]
+            }
+          },
+          {
+            "name": "object_list_attribute",
+            "object": {
+              "computed_optional_required": "computed",
+              "attribute_types": [
+                {
+                  "name": "obj_list_attr",
+                  "list": {
+                    "element_type": {
+                      "string": {}
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "object_list_object_attribute",
+            "object": {
+              "computed_optional_required": "computed",
+              "attribute_types": [
+                {
+                  "name": "obj_list_attr",
+                  "list": {
+                    "element_type": {
+                      "object": {
+                        "attribute_types": [
+                          {
+                            "name": "obj_list_obj_attr",
+                            "string": {}
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "list_nested_bool_attribute",
+            "list_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "list_nested_list_nested_bool_attribute",
+            "list_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "list_nested_attribute",
+                    "list_nested": {
+                      "computed_optional_required": "computed",
+                      "nested_object": {
+                        "attributes": [
+                          {
+                            "name": "bool_attribute",
+                            "bool": {
+                              "computed_optional_required": "computed"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "list_nested_list_nested_list_attribute",
+            "list_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "list_nested_attribute",
+                    "list_nested": {
+                      "computed_optional_required": "computed",
+                      "nested_object": {
+                        "attributes": [
+                          {
+                            "name": "list_attribute",
+                            "list": {
+                              "computed_optional_required": "computed",
+                              "element_type": {
+                                "string": {}
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "list_nested_bool_attribute_associated_external_type",
+            "list_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "associated_external_type": {
+                  "import": {
+                    "path": "example.com/apisdk"
+                  },
+                  "type": "*apisdk.Type"
+                },
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "set_attribute",
+            "set": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "set_attribute_custom_type",
+            "set": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.SetType",
+                "value_type": "basetypes.SetValue"
+              },
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "set_attribute_default_custom",
+            "set": {
+              "computed_optional_required": "optional",
+              "default": {
+                "custom": {
+                  "imports": [
+                    {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/attr"
+                    },
+                    {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
+                    },
+                    {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/types"
+                    }
+                  ],
+                  "schema_definition": "setdefault.StaticValue(types.SetValueMust(types.String, []attr.Value{types.StringValue(\"example\")}))"
+                }
+              },
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "set_attribute_element_type_string_custom_type",
+            "set": {
+              "computed_optional_required": "computed",
+              "element_type": {
+                "string": {
+                  "custom_type": {
+                    "import": {
+                      "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                    },
+                    "type": "basetypes.StringType",
+                    "value_type": "basetypes.StringValue"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "set_nested_bool_attribute",
+            "set_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "set_nested_bool_attribute_associated_external_type",
+            "set_nested": {
+              "computed_optional_required": "computed",
+              "nested_object": {
+                "associated_external_type": {
+                  "import": {
+                    "path": "example.com/apisdk"
+                  },
+                  "type": "*apisdk.Type"
+                },
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "single_nested_bool_attribute",
+            "single_nested": {
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "computed_optional_required": "computed"
+                  }
+                }
+              ],
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "single_nested_single_nested_bool_attribute",
+            "single_nested": {
+              "attributes": [
+                {
+                  "name": "single_nested_attribute",
+                  "single_nested": {
+                    "attributes": [
+                      {
+                        "name": "bool_attribute",
+                        "bool": {
+                          "computed_optional_required": "computed"
+                        }
+                      }
+                    ],
+                    "computed_optional_required": "computed"
+                  }
+                }
+              ],
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "single_nested_single_nested_list_attribute",
+            "single_nested": {
+              "attributes": [
+                {
+                  "name": "single_nested_attribute",
+                  "single_nested": {
+                    "attributes": [
+                      {
+                        "name": "list_attribute",
+                        "list": {
+                          "computed_optional_required": "computed",
+                          "element_type": {
+                            "string": {}
+                          }
+                        }
+                      }
+                    ],
+                    "computed_optional_required": "computed"
+                  }
+                }
+              ],
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "single_nested_bool_attribute_associated_external_type",
+            "single_nested": {
+              "associated_external_type": {
+                "import": {
+                  "path": "example.com/apisdk"
+                },
+                "type": "*apisdk.Type"
+              },
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "computed_optional_required": "computed"
+                  }
+                }
+              ],
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "string_attribute",
+            "string": {
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "string_attribute_custom_type",
+            "string": {
+              "computed_optional_required": "computed",
+              "custom_type": {
+                "import": {
+                  "path": "github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+                },
+                "type": "basetypes.StringType",
+                "value_type": "basetypes.StringValue"
+              }
+            }
+          },
+          {
+            "name": "string_attribute_default_static",
+            "string": {
+              "computed_optional_required": "optional",
+              "default": {
+                "static": "example"
+              }
+            }
+          }
+        ],
+        "blocks": [
+          {
+            "name": "list_nested_block_bool_attribute",
+            "list_nested": {
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "list_nested_list_nested_block_bool_attribute",
+            "list_nested": {
+              "nested_object": {
+                "blocks": [
+                  {
+                    "name": "list_nested_block",
+                    "list_nested": {
+                      "nested_object": {
+                        "attributes": [
+                          {
+                            "name": "bool_attribute",
+                            "bool": {
+                              "computed_optional_required": "computed"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "list_nested_block_object_attribute_list_nested_nested_block_list_attribute",
+            "list_nested": {
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "object_attribute",
+                    "object": {
+                      "computed_optional_required": "computed",
+                      "attribute_types": [
+                        {
+                          "name": "obj_string_attr",
+                          "string": {}
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "blocks": [
+                  {
+                    "name": "list_nested_block",
+                    "list_nested": {
+                      "nested_object": {
+                        "attributes": [
+                          {
+                            "name": "list_attribute",
+                            "list": {
+                              "computed_optional_required": "computed",
+                              "element_type": {
+                                "string": {}
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "list_nested_block_bool_attribute_associated_external_type",
+            "list_nested": {
+              "nested_object": {
+                "associated_external_type": {
+                  "import": {
+                    "path": "example.com/apisdk"
+                  },
+                  "type": "*apisdk.Type"
+                },
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "set_nested_block_bool_attribute",
+            "set_nested": {
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "set_nested_block_bool_attribute_associated_external_type",
+            "set_nested": {
+              "nested_object": {
+                "associated_external_type": {
+                  "import": {
+                    "path": "example.com/apisdk"
+                  },
+                  "type": "*apisdk.Type"
+                },
+                "attributes": [
+                  {
+                    "name": "bool_attribute",
+                    "bool": {
+                      "computed_optional_required": "computed"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "single_nested_block_bool_attribute",
+            "single_nested": {
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "computed_optional_required": "computed"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "single_nested_single_nested_block_bool_attribute",
+            "single_nested": {
+              "blocks": [
+                {
+                  "name": "single_nested_block",
+                  "single_nested": {
+                    "attributes": [
+                      {
+                        "name": "bool_attribute",
+                        "bool": {
+                          "computed_optional_required": "computed"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "single_nested_block_object_attribute_single_nested_list_nested_block_list_attribute",
+            "single_nested": {
+              "attributes": [
+                {
+                  "name": "object_attribute",
+                  "object": {
+                    "computed_optional_required": "computed",
+                    "attribute_types": [
+                      {
+                        "name": "obj_string_attr",
+                        "string": {}
+                      }
+                    ]
+                  }
+                }
+              ],
+              "blocks": [
+                {
+                  "name": "list_nested_block",
+                  "list_nested": {
+                    "nested_object": {
+                      "attributes": [
+                        {
+                          "name": "list_attribute",
+                          "list": {
+                            "computed_optional_required": "computed",
+                            "element_type": {
+                              "string": {}
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "single_nested_block_bool_attribute_associated_external_type",
+            "single_nested": {
+              "associated_external_type": {
+                "import": {
+                  "path": "example.com/apisdk"
+                },
+                "type": "*apisdk.Type"
+              },
+              "attributes": [
+                {
+                  "name": "bool_attribute",
+                  "bool": {
+                    "computed_optional_required": "computed"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "version": "0.1"
+}

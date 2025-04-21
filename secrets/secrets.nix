@@ -6,11 +6,11 @@ let
     nahsi-system76
   ];
 
-  fluence = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJsgRHQ+9uOloV19+j4QO/Ta+DGYfyK8udluU6r0Y4/J";
+  fluence-github-runner = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBwZU1ZgFzSlEyHyfPwSeDc1gEp67ctKjr0i6bG5HLSJ";
   systems = [
-    fluence
+    fluence-github-runner
   ];
 in
 {
-  "acme.age".publicKeys = fluence ++ users;
+  "runner-token.age".publicKeys = systems ++ users;
 }

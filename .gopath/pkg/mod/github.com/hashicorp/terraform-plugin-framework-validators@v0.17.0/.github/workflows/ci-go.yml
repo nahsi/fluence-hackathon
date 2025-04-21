@@ -1,0 +1,43 @@
+# Continuous integration handling for Go
+name: ci-go
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/ci-go.yml
+      - .golangci.yml
+      - go.mod
+      - '**.go'
+
+permissions:
+  contents: read
+
+jobs:
+  golangci-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version-file: 'go.mod'
+      - run: go mod download
+      - uses: golangci/golangci-lint-action@2e788936b09dd82dc280e845628a40d2ba6b204c # v6.3.1
+
+  test:
+    name: test (Go v${{ matrix.go-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: [ '1.23', '1.22' ]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version: ${{ matrix.go-version }}
+      - run: go mod download
+      - run: go test -coverprofile=coverage.out ./...
+      - run: go tool cover -html=coverage.out -o coverage.html
+      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
+        with:
+          name: go-${{ matrix.go-version }}-coverage
+          path: coverage.html

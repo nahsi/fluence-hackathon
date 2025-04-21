@@ -1,0 +1,6 @@
+type {{.Name}}Value struct {
+{{- range $key, $value := .AttrValues }}
+{{$key.ToPrefixPascalCase $.Name}} {{$value}} `tfsdk:"{{$key}}"`
+{{- end}}
+state attr.ValueState
+}
