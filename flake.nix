@@ -78,6 +78,13 @@
             ./hosts/fluence-github-runner
           ];
         };
+        presentation = lib.nixosSystem {
+          inherit specialArgs;
+          modules = [
+            comin.nixosModules.comin
+            ./hosts/presentation
+          ];
+        };
       };
 
       packages.${system} = {
