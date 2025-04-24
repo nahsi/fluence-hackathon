@@ -4,6 +4,10 @@
     ../../system
   ];
 
+  networking = {
+    hostName = "presentation";
+  };
+
   programs = {
     direnv = {
       enable = true;
